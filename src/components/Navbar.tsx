@@ -23,7 +23,7 @@ export default function Navbar() {
         className={`fixed top-0 left-0 w-full z-40 transition-all duration-300 ${
           scrolled
             ? 'bg-cream/90 backdrop-blur-md shadow-sm border-b border-cocoa/10 py-3 sm:py-4'
-            : 'bg-cream/60 backdrop-blur-sm py-4 sm:py-5'
+            : 'bg-transparent py-4 sm:py-5'
         }`}
       >
         <div className="max-w-7xl mx-auto px-5 sm:px-8 flex items-center justify-between">
@@ -64,10 +64,10 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-4">
             <a
               href="#books"
-              className="inline-flex items-center gap-2 bg-ochre hover:bg-ochre-dark text-white font-medium text-sm px-5 py-2.5 rounded-full shadow-sm hover:shadow transition-all duration-200 hover:-translate-y-0.5"
+              className="inline-flex items-center gap-1.5 text-white hover:text-white/80 font-medium text-sm transition-colors"
             >
               <span>Explore Books</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ArrowRight className="w-3.5 h-3.5 text-white" />
             </a>
           </div>
 
