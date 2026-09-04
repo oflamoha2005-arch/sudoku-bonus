@@ -78,9 +78,15 @@ export default function Hero() {
         aria-hidden="true"
       />
 
-      {/* 2. Clean Ambient Layer (Preserves natural video brilliance without white fog) */}
+      {/* 2. Soft Ambient Vignette: Protects left-side typography while preserving right-side character brilliance */}
       <div
-        className="absolute inset-0 z-[1] pointer-events-none bg-gradient-to-r from-black/15 via-transparent to-transparent opacity-40"
+        className="absolute inset-0 z-[1] pointer-events-none bg-gradient-to-r from-cream/95 via-cream/80 to-cream/10 sm:from-cream/90 sm:via-cream/65 sm:to-transparent"
+        aria-hidden="true"
+      />
+
+      {/* Subtle top and bottom blend */}
+      <div
+        className="absolute inset-x-0 bottom-0 h-32 z-[1] pointer-events-none bg-gradient-to-t from-cream to-transparent"
         aria-hidden="true"
       />
 
@@ -129,7 +135,7 @@ export default function Hero() {
 
             <a
               href={siteConfig.hero.heroCTA.secondary.href}
-              className="inline-flex items-center justify-center gap-2 bg-transparent hover:bg-cocoa/5 text-cocoa border border-cocoa/60 font-semibold text-sm sm:text-base px-6 sm:px-7 py-3 rounded-full transition-all duration-200 hover:-translate-y-0.5"
+              className="inline-flex items-center justify-center gap-2 bg-cream-card hover:bg-cream-pure text-cocoa border border-cocoa/15 font-semibold text-sm sm:text-base px-5 sm:px-6 py-3 rounded-full shadow-xs hover:border-cocoa/30 transition-all duration-200 hover:-translate-y-0.5"
             >
               <span>{siteConfig.hero.heroCTA.secondary.label}</span>
             </a>
