@@ -35,7 +35,7 @@ export default function QuickCategories({ onSelectCategory }: QuickCategoriesPro
 
   return (
     <section className="relative z-10 -mt-8 sm:-mt-12 max-w-7xl mx-auto px-5 sm:px-8">
-      <div className="bg-cream-pure/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border border-cocoa/10">
+      <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/20">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <div>
             <h2 className="font-display text-xl sm:text-2xl font-bold text-cocoa">
