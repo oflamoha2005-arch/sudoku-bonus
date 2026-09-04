@@ -41,7 +41,7 @@ export const siteConfig = {
   },
 
   hero: {
-    heroVideo: '/video/video.mp4',
+    heroVideo: `${import.meta.env.BASE_URL}video/video.mp4`,
     heroPoster: '',
     heroEyebrow: 'Creative Publishing',
     heroTitle: 'Discover Worlds Made to Explore',
