@@ -122,21 +122,29 @@ export default function HeroSection() {
             </div>
           </motion.div>
 
-          {/* Hero Image */}
+          {/* Hero Visual Animation */}
           <motion.div
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-            className="relative hidden lg:block"
+            className="relative mt-8 lg:mt-0 w-full max-w-[580px] lg:max-w-none ml-auto z-10"
           >
-            <div className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl shadow-accent-purple/20 border-4 border-white/50">
-              <Image
-                src={assetPath("/illustrations/hero-mascot.jpg")}
-                alt="Oufella brand mascot owl surrounded by puzzles, mazes, word search, and hidden picture activity books"
-                fill
-                className="object-cover"
-                priority
-                sizes="(max-width: 1024px) 100vw, 50vw"
+            {/* Ambient soft pastel glow behind card */}
+            <div
+              className="absolute -inset-4 bg-gradient-to-tr from-[#FF8FAB]/25 via-[#FFD93D]/20 to-[#B388FF]/25 rounded-[2.5rem] blur-2xl -z-10"
+              aria-hidden="true"
+            />
+
+            <div className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl shadow-accent-purple/20 border-4 border-white/70 bg-gradient-to-br from-[#FFF5E6] via-[#FFEEF0] to-[#EDE7FF]">
+              <video
+                src={assetPath("/video/Boy_waving_hello_animation.mp4")}
+                autoPlay
+                loop
+                muted
+                playsInline
+                controls={false}
+                preload="auto"
+                className="w-full h-full object-cover object-[82%_center] select-none pointer-events-none"
               />
             </div>
 
