@@ -149,10 +149,10 @@ export default function HeroSection() {
               />
 
               {/* Sequential Animated Speech Bubbles */}
-              <div className="absolute top-[7%] sm:top-[9%] left-[5%] sm:left-[7%] z-20 select-none pointer-events-none flex flex-col gap-2 sm:gap-2.5 items-start">
+              <div className="absolute top-[5%] sm:top-[6%] left-[4%] sm:left-[6%] z-20 select-none pointer-events-none flex flex-col gap-1.5 sm:gap-2 items-start max-w-[56%] sm:max-w-[52%]">
                 {/* Bubble 1: Hello Friend! */}
                 <motion.div
-                  initial={{ opacity: 0, scale: 0, y: 15 }}
+                  initial={{ opacity: 0, scale: 0, y: 12 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   transition={{
                     type: "spring",
@@ -162,22 +162,22 @@ export default function HeroSection() {
                   }}
                 >
                   <motion.div
-                    animate={{ y: [0, -4, 0] }}
+                    animate={{ y: [0, -3, 0] }}
                     transition={{
                       repeat: Infinity,
                       duration: 3,
                       ease: "easeInOut",
                     }}
-                    className="relative px-3 py-1 sm:px-4 sm:py-1.5 bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-lg shadow-accent-purple/15 border-2 border-accent-yellow flex items-center gap-1.5"
+                    className="relative px-2.5 py-0.5 sm:px-3 sm:py-1 bg-white/95 backdrop-blur-md rounded-xl sm:rounded-2xl shadow-md shadow-accent-purple/10 border-2 border-accent-yellow flex items-center gap-1.5"
                   >
                     <span
-                      className="text-xs sm:text-sm md:text-base font-extrabold text-foreground tracking-wide whitespace-nowrap"
+                      className="text-[11px] sm:text-xs md:text-sm font-extrabold text-foreground tracking-wide whitespace-nowrap"
                       style={{ fontFamily: "var(--font-fredoka)" }}
                     >
                       Hello Friend!
                     </span>
                     <motion.span
-                      className="inline-block text-sm sm:text-lg"
+                      className="inline-block text-xs sm:text-base"
                       animate={{ rotate: [0, 15, -15, 0] }}
                       transition={{
                         repeat: Infinity,
@@ -187,14 +187,13 @@ export default function HeroSection() {
                     >
                       🌼
                     </motion.span>
-                    {/* Pointer tail */}
-                    <div className="absolute -bottom-1 right-3 sm:right-4 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-white border-r-2 border-b-2 border-accent-yellow rotate-45" />
+                    <div className="absolute -bottom-1 right-2.5 sm:right-3 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-white border-r-2 border-b-2 border-accent-yellow rotate-45" />
                   </motion.div>
                 </motion.div>
 
                 {/* Bubble 2: Welcome to Oufella! (1s after Bubble 1) */}
                 <motion.div
-                  initial={{ opacity: 0, scale: 0, y: 15 }}
+                  initial={{ opacity: 0, scale: 0, y: 12 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   transition={{
                     type: "spring",
@@ -204,23 +203,23 @@ export default function HeroSection() {
                   }}
                 >
                   <motion.div
-                    animate={{ y: [0, -4, 0] }}
+                    animate={{ y: [0, -3, 0] }}
                     transition={{
                       repeat: Infinity,
                       duration: 3,
-                      delay: 0.4,
+                      delay: 0.3,
                       ease: "easeInOut",
                     }}
-                    className="relative px-3 py-1 sm:px-4 sm:py-1.5 bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-lg shadow-accent-purple/15 border-2 border-accent-yellow flex items-center gap-1.5"
+                    className="relative px-2.5 py-0.5 sm:px-3 sm:py-1 bg-white/95 backdrop-blur-md rounded-xl sm:rounded-2xl shadow-md shadow-accent-purple/10 border-2 border-accent-yellow flex items-center gap-1.5"
                   >
                     <span
-                      className="text-xs sm:text-sm md:text-base font-extrabold text-foreground tracking-wide whitespace-nowrap"
+                      className="text-[11px] sm:text-xs md:text-sm font-extrabold text-foreground tracking-wide whitespace-nowrap"
                       style={{ fontFamily: "var(--font-fredoka)" }}
                     >
                       Welcome to <span className="text-primary font-black">Oufella</span>!
                     </span>
                     <motion.span
-                      className="inline-block text-sm sm:text-lg"
+                      className="inline-block text-xs sm:text-base"
                       animate={{ scale: [1, 1.25, 1] }}
                       transition={{
                         repeat: Infinity,
@@ -230,14 +229,13 @@ export default function HeroSection() {
                     >
                       ✨
                     </motion.span>
-                    {/* Pointer tail */}
-                    <div className="absolute -bottom-1 right-3 sm:right-4 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-white border-r-2 border-b-2 border-accent-yellow rotate-45" />
+                    <div className="absolute -bottom-1 right-2.5 sm:right-3 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-white border-r-2 border-b-2 border-accent-yellow rotate-45" />
                   </motion.div>
                 </motion.div>
 
                 {/* Bubble 3: Explore our fun books! (1s after Bubble 2) */}
                 <motion.div
-                  initial={{ opacity: 0, scale: 0, y: 15 }}
+                  initial={{ opacity: 0, scale: 0, y: 12 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   transition={{
                     type: "spring",
@@ -247,23 +245,23 @@ export default function HeroSection() {
                   }}
                 >
                   <motion.div
-                    animate={{ y: [0, -4, 0] }}
+                    animate={{ y: [0, -3, 0] }}
                     transition={{
                       repeat: Infinity,
                       duration: 3,
-                      delay: 0.8,
+                      delay: 0.6,
                       ease: "easeInOut",
                     }}
-                    className="relative px-3 py-1 sm:px-4 sm:py-1.5 bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-lg shadow-accent-purple/15 border-2 border-accent-yellow flex items-center gap-1.5"
+                    className="relative px-2.5 py-0.5 sm:px-3 sm:py-1 bg-white/95 backdrop-blur-md rounded-xl sm:rounded-2xl shadow-md shadow-accent-purple/10 border-2 border-accent-yellow flex items-center gap-1.5"
                   >
                     <span
-                      className="text-xs sm:text-sm md:text-base font-extrabold text-foreground tracking-wide whitespace-nowrap"
+                      className="text-[11px] sm:text-xs md:text-sm font-extrabold text-foreground tracking-wide whitespace-nowrap"
                       style={{ fontFamily: "var(--font-fredoka)" }}
                     >
                       Explore our fun books!
                     </span>
                     <motion.span
-                      className="inline-block text-sm sm:text-lg"
+                      className="inline-block text-xs sm:text-base"
                       animate={{ rotate: [0, 12, -12, 0] }}
                       transition={{
                         repeat: Infinity,
@@ -273,8 +271,133 @@ export default function HeroSection() {
                     >
                       📚
                     </motion.span>
-                    {/* Pointer tail */}
-                    <div className="absolute -bottom-1 right-3 sm:right-4 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-white border-r-2 border-b-2 border-accent-yellow rotate-45" />
+                    <div className="absolute -bottom-1 right-2.5 sm:right-3 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-white border-r-2 border-b-2 border-accent-yellow rotate-45" />
+                  </motion.div>
+                </motion.div>
+
+                {/* Bubble 4: Grab a Free Book! (1s after Bubble 3) */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0, y: 12 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 350,
+                    damping: 18,
+                    delay: 4.2,
+                  }}
+                >
+                  <motion.div
+                    animate={{ y: [0, -3, 0] }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 3,
+                      delay: 0.9,
+                      ease: "easeInOut",
+                    }}
+                    className="relative px-2.5 py-0.5 sm:px-3 sm:py-1 bg-white/95 backdrop-blur-md rounded-xl sm:rounded-2xl shadow-md shadow-accent-purple/10 border-2 border-accent-yellow flex items-center gap-1.5"
+                  >
+                    <span
+                      className="text-[11px] sm:text-xs md:text-sm font-extrabold text-[#2D1B4E] tracking-wide whitespace-nowrap"
+                      style={{ fontFamily: "var(--font-fredoka)" }}
+                    >
+                      Grab a Free Book!
+                    </span>
+                    <motion.span
+                      className="inline-block text-xs sm:text-base"
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 2,
+                        ease: "easeInOut",
+                      }}
+                    >
+                      🎁
+                    </motion.span>
+                    <div className="absolute -bottom-1 right-2.5 sm:right-3 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-white border-r-2 border-b-2 border-accent-yellow rotate-45" />
+                  </motion.div>
+                </motion.div>
+
+                {/* Bubble 5: New Book Just Dropped (1s after Bubble 4) */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0, y: 12 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 350,
+                    damping: 18,
+                    delay: 5.2,
+                  }}
+                >
+                  <motion.div
+                    animate={{ y: [0, -3, 0] }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 3,
+                      delay: 1.2,
+                      ease: "easeInOut",
+                    }}
+                    className="relative px-2.5 py-0.5 sm:px-3 sm:py-1 bg-white/95 backdrop-blur-md rounded-xl sm:rounded-2xl shadow-md shadow-accent-purple/10 border-2 border-accent-yellow flex items-center gap-1.5"
+                  >
+                    <span
+                      className="text-[11px] sm:text-xs md:text-sm font-extrabold text-[#2D1B4E] tracking-wide whitespace-nowrap"
+                      style={{ fontFamily: "var(--font-fredoka)" }}
+                    >
+                      New Book Just Dropped
+                    </span>
+                    <motion.span
+                      className="inline-block text-xs sm:text-base"
+                      animate={{ rotate: [0, 15, -15, 0] }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 2.3,
+                        ease: "easeInOut",
+                      }}
+                    >
+                      🚀
+                    </motion.span>
+                    <div className="absolute -bottom-1 right-2.5 sm:right-3 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-white border-r-2 border-b-2 border-accent-yellow rotate-45" />
+                  </motion.div>
+                </motion.div>
+
+                {/* Bubble 6: Made With Love, Just for You! (2s after Bubble 5) */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0, y: 12 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 350,
+                    damping: 18,
+                    delay: 7.2,
+                  }}
+                >
+                  <motion.div
+                    animate={{ y: [0, -3, 0] }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 3,
+                      delay: 1.5,
+                      ease: "easeInOut",
+                    }}
+                    className="relative px-2.5 py-0.5 sm:px-3 sm:py-1 bg-white/95 backdrop-blur-md rounded-xl sm:rounded-2xl shadow-md shadow-accent-purple/10 border-2 border-accent-yellow flex items-center gap-1.5"
+                  >
+                    <span
+                      className="text-[11px] sm:text-xs md:text-sm font-extrabold text-[#2D1B4E] tracking-wide whitespace-nowrap"
+                      style={{ fontFamily: "var(--font-fredoka)" }}
+                    >
+                      Made With Love, Just for You!
+                    </span>
+                    <motion.span
+                      className="inline-block text-xs sm:text-base"
+                      animate={{ scale: [1, 1.3, 1] }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 1.8,
+                        ease: "easeInOut",
+                      }}
+                    >
+                      ❤️
+                    </motion.span>
+                    <div className="absolute -bottom-1 right-2.5 sm:right-3 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-white border-r-2 border-b-2 border-accent-yellow rotate-45" />
                   </motion.div>
                 </motion.div>
               </div>
