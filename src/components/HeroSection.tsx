@@ -1,127 +1,227 @@
-import React from 'react';
-import { CharacterVideo } from './CharacterVideo';
+"use client";
 
-interface HeroSectionProps {
-  onPlaySudoku?: () => void;
-  onSelectCategory?: (category: string) => void;
-}
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { assetPath } from "@/utils/paths";
 
-export const HeroSection: React.FC<HeroSectionProps> = ({
-  onPlaySudoku,
-  onSelectCategory,
-}) => {
+export default function HeroSection() {
   return (
-    <section
-      className="relative pt-6 sm:pt-10 pb-16 sm:pb-24 lg:pb-32 px-6 sm:px-10 lg:px-16 max-w-[1440px] mx-auto min-h-[85vh] flex flex-col justify-between overflow-hidden"
-      id="hero"
-    >
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center my-auto">
-        {/* Left Editorial Column (Monumental Typography) */}
-        <div className="lg:col-span-5 flex flex-col justify-center z-20 space-y-6 lg:pr-4">
-          {/* Category Chip */}
-          <div className="inline-flex items-center gap-2 self-start px-4 py-1.5 rounded-full border border-[#131C24]/30 bg-white/10 backdrop-blur-sm">
-            <span className="text-xs font-black tracking-wider uppercase text-[#131C24]">
-              ✦ CREATIVE PUBLISHING
-            </span>
-          </div>
+    <section className="relative min-h-[90vh] flex items-center overflow-hidden pt-20">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#FFF5E6] via-[#FFEEF0] to-[#EDE7FF]" />
 
-          {/* Monumental Headline */}
-          <h1 className="text-5xl sm:text-6xl md:text-7xl xl:text-[84px] font-black tracking-tight text-[#131C24] leading-[1.02]">
-            Discover Worlds
-            <br />
-            Made to Explore
-          </h1>
+      {/* Decorative pattern */}
+      <div className="absolute inset-0 pattern-dots" />
 
-          {/* Body Description */}
-          <p className="text-lg sm:text-xl text-[#131C24]/90 font-medium max-w-md leading-relaxed">
-            Oufellia creates books, puzzles and creative experiences designed to
-            inspire curiosity, relaxation and discovery.
-          </p>
+      {/* Floating Elements */}
+      <FloatingShape
+        className="top-24 left-[5%] w-16 h-16"
+        color="#FFD93D"
+        shape="star"
+        delay={0}
+      />
+      <FloatingShape
+        className="top-32 right-[10%] w-12 h-12"
+        color="#6EC6FF"
+        shape="circle"
+        delay={1}
+      />
+      <FloatingShape
+        className="bottom-32 left-[8%] w-14 h-14"
+        color="#B388FF"
+        shape="square"
+        delay={2}
+      />
+      <FloatingShape
+        className="bottom-40 right-[5%] w-10 h-10"
+        color="#4ECB71"
+        shape="triangle"
+        delay={0.5}
+      />
+      <FloatingShape
+        className="top-[50%] left-[15%] w-8 h-8"
+        color="#FF6B6B"
+        shape="circle"
+        delay={1.5}
+      />
+      <FloatingShape
+        className="top-40 left-[40%] w-6 h-6"
+        color="#FF9F43"
+        shape="star"
+        delay={3}
+      />
 
-          {/* Primary CTA Action */}
-          <div className="pt-2 flex flex-wrap items-center gap-4">
-            <a
-              className="pill-press inline-flex items-center gap-3 bg-[#D95C14] hover:bg-[#C5500F] text-white font-bold px-8 py-4 rounded-full text-base sm:text-lg shadow-pill hover:shadow-pill-hover transition-all cursor-pointer"
-              href="#featured-books"
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          {/* Text Content */}
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-sm rounded-full border border-accent-purple/20 mb-6"
             >
-              <span>Explore Books</span>
-              <span className="text-lg font-bold">→</span>
-            </a>
-          </div>
+              <span className="w-2 h-2 rounded-full bg-accent-green animate-pulse" />
+              <span className="text-sm font-medium text-foreground/70">
+                ✨ Meet Oufella — Activity Books for Curious Kids
+              </span>
+            </motion.div>
 
-          {/* Value Pill Tags */}
-          <div className="pt-3 flex flex-wrap gap-2.5 items-center">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-[#A8E6CF] text-[#131C24] border border-white/40 shadow-sm select-none">
-              <span>☆</span> Story
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-[#FF7654] text-white border border-white/30 shadow-sm select-none">
-              <span>👁</span> Vision
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-[#C5B4FA] text-[#131C24] border border-white/40 shadow-sm select-none">
-              <span>📖</span> Mindful
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-[#8AE0F2] text-[#131C24] border border-white/40 shadow-sm select-none">
-              <span>💡</span> Curiosity
-            </span>
-          </div>
+            <h1
+              className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight mb-6"
+              style={{ fontFamily: "var(--font-fredoka)" }}
+            >
+              Where Learning Feels Like{" "}
+              <span className="gradient-text">Pure Play!</span>{" "}
+              <motion.span
+                className="inline-block"
+                animate={{ scale: [1, 1.18, 1] }}
+                transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+              >
+                🎨
+              </motion.span>
+            </h1>
 
-          {/* Interactive Scrub Hint Badge */}
-          <div className="pt-2">
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/20 border border-white/35 backdrop-blur-sm text-xs sm:text-[13px] text-[#131C24]/90 font-medium select-none">
-              <span className="text-base leading-none">⏱</span>
-              <span>Move cursor or swipe horizontally to scrub animation</span>
+            <p className="text-lg sm:text-xl text-foreground/70 leading-relaxed mb-8 max-w-xl">
+              Welcome to <strong>Oufella</strong>! We craft a vibrant, screen-free world of
+              activity books — packed with brain-boosting puzzles, winding mazes, word searches,
+              fill-ins, and hidden pictures designed to spark joy and make learning an absolute blast.
+            </p>
+
+            <div className="flex flex-wrap gap-4">
+              <Link
+                href="/#categories"
+                className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary to-accent-purple text-white rounded-full font-bold text-lg shadow-xl shadow-primary/25 hover:shadow-2xl hover:shadow-primary/30 hover:scale-105 transition-all"
+              >
+                Explore The Collection
+                <motion.span
+                  animate={{ x: [0, 5, 0] }}
+                  transition={{ repeat: Infinity, duration: 1.5 }}
+                >
+                  →
+                </motion.span>
+              </Link>
+              <Link
+                href="/#teaser"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-white/70 backdrop-blur-sm text-foreground rounded-full font-bold text-lg border-2 border-accent-yellow/30 hover:border-accent-yellow hover:bg-accent-yellow/10 transition-all"
+              >
+                Play a Mini Game 🎯
+              </Link>
             </div>
-          </div>
-        </div>
 
-        {/* Center: Seamless HERO Cutout Character (NO Box, NO Border, True Massive Visual) */}
-        <div className="lg:col-span-5 relative flex items-end justify-center z-10 -my-6 lg:my-0">
-          <CharacterVideo />
-        </div>
+            {/* Stats */}
+            <div className="flex gap-8 mt-10">
+              <Stat number="50+" label="Activity Books" />
+              <Stat number="100%" label="Screen-Free Fun" />
+              <Stat number="⭐ 5-Star" label="Kid & Parent Loved" />
+            </div>
+          </motion.div>
 
-        {/* Right Column: Clean Floating White Tactile Pills Stack */}
-        <div className="lg:col-span-2 flex flex-row lg:flex-col justify-center lg:justify-center items-center lg:items-end gap-3 flex-wrap z-20">
-          <a
-            className="pill-press w-full sm:w-[210px] flex items-center justify-between px-6 py-3.5 rounded-full bg-white/95 hover:bg-white text-[#131C24] font-bold shadow-pill hover:shadow-pill-hover text-sm sm:text-base border border-white/50 transition cursor-pointer"
-            href="#featured-books"
-            onClick={() => onSelectCategory && onSelectCategory('word-search')}
+          {/* Hero Image */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            className="relative hidden lg:block"
           >
-            <span>Word Search</span>
-            <span className="text-base">→</span>
-          </a>
-          <a
-            className="pill-press w-full sm:w-[210px] flex items-center justify-between px-6 py-3.5 rounded-full bg-white/95 hover:bg-white text-[#131C24] font-bold shadow-pill hover:shadow-pill-hover text-sm sm:text-base border border-white/50 transition cursor-pointer"
-            href="#featured-books"
-            onClick={() => onSelectCategory && onSelectCategory('sudoku')}
-          >
-            <span>Sudoku</span>
-            <span className="text-base">→</span>
-          </a>
-          <a
-            className="pill-press w-full sm:w-[210px] flex items-center justify-between px-6 py-3.5 rounded-full bg-white/95 hover:bg-white text-[#131C24] font-bold shadow-pill hover:shadow-pill-hover text-sm sm:text-base border border-white/50 transition cursor-pointer"
-            href="#featured-books"
-            onClick={() => onSelectCategory && onSelectCategory('mazes')}
-          >
-            <span>Mazes</span>
-            <span className="text-base">→</span>
-          </a>
-          <a
-            className="pill-press w-full sm:w-[210px] flex items-center justify-between px-6 py-3.5 rounded-full bg-white/95 hover:bg-white text-[#131C24] font-bold shadow-pill hover:shadow-pill-hover text-sm sm:text-base border border-white/50 transition cursor-pointer"
-            href="#featured-books"
-          >
-            <span>Puzzle Books</span>
-            <span className="text-base">→</span>
-          </a>
-          <button
-            type="button"
-            className="pill-press w-full sm:w-[210px] flex items-center justify-between px-6 py-3.5 rounded-full bg-[#131C24] hover:bg-black text-white font-bold shadow-pill hover:shadow-pill-hover text-sm sm:text-base transition cursor-pointer"
-            onClick={onPlaySudoku}
-          >
-            <span>Play Sudoku</span>
-            <span className="text-base">→</span>
-          </button>
+            <div className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl shadow-accent-purple/20 border-4 border-white/50">
+              <Image
+                src={assetPath("/illustrations/hero-mascot.jpg")}
+                alt="Oufella brand mascot owl surrounded by puzzles, mazes, word search, and hidden picture activity books"
+                fill
+                className="object-cover"
+                priority
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+            </div>
+
+            {/* Floating badge */}
+            <motion.div
+              animate={{ y: [0, -10, 0] }}
+              transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+              className="absolute -bottom-4 -left-4 px-5 py-3 bg-white rounded-2xl shadow-xl border border-accent-yellow/20"
+            >
+              <span className="text-sm font-bold text-foreground">
+                📚 Available on Amazon
+              </span>
+            </motion.div>
+
+            <motion.div
+              animate={{ y: [0, -8, 0] }}
+              transition={{
+                repeat: Infinity,
+                duration: 3.5,
+                ease: "easeInOut",
+                delay: 0.5,
+              }}
+              className="absolute -top-4 -right-4 px-4 py-2 bg-accent-yellow rounded-2xl shadow-xl"
+            >
+              <span className="text-sm font-bold text-[#2D1B4E]">
+                ✨ New Releases!
+              </span>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </section>
   );
-};
+}
+
+function Stat({ number, label }: { number: string; label: string }) {
+  return (
+    <div>
+      <p
+        className="text-2xl font-bold text-foreground"
+        style={{ fontFamily: "var(--font-fredoka)" }}
+      >
+        {number}
+      </p>
+      <p className="text-sm text-foreground/50">{label}</p>
+    </div>
+  );
+}
+
+function FloatingShape({
+  className,
+  color,
+  shape,
+  delay,
+}: {
+  className: string;
+  color: string;
+  shape: "star" | "circle" | "square" | "triangle";
+  delay: number;
+}) {
+  const shapes = {
+    star: "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)",
+    circle: "circle(50%)",
+    square: "inset(10% round 20%)",
+    triangle: "polygon(50% 0%, 0% 100%, 100% 100%)",
+  };
+
+  return (
+    <motion.div
+      className={`absolute ${className} opacity-20`}
+      style={{
+        backgroundColor: color,
+        clipPath: shapes[shape],
+      }}
+      animate={{
+        y: [0, -20, 0],
+        rotate: [0, 10, -10, 0],
+        scale: [1, 1.1, 1],
+      }}
+      transition={{
+        duration: 6 + delay,
+        repeat: Infinity,
+        ease: "easeInOut",
+        delay,
+      }}
+    />
+  );
+}

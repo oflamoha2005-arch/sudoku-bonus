@@ -1,125 +1,262 @@
-import React, { useState } from 'react';
+"use client";
 
-const NAV_LINKS = [
-  { label: 'Labs', href: '#labs' },
-  { label: 'Studio', href: '#studio' },
-  { label: 'Openings', href: '#openings' },
-  { label: 'Shop', href: '#shop' },
-];
+import { useState } from "react";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X, BookOpen, ChevronDown } from "lucide-react";
+import { categories, categoryGroups } from "@/data/books";
+import { socialLinks } from "@/data/social";
 
-export const Navbar: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleMenu = () => setIsOpen((prev) => !prev);
-  const closeMenu = () => setIsOpen(false);
+export default function Navbar() {
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
 
   return (
-    <>
-      <header className="fixed top-0 left-0 w-full z-10 px-5 sm:px-8 py-4 sm:py-5 flex justify-between items-center">
-        {/* Logo (left) */}
-        <a
-          href="#"
-          className="flex flex-row items-center gap-3 select-none"
-          aria-label="Mainframe Home"
-        >
-          <span
-            className="text-[21px] sm:text-[26px] tracking-tight text-white font-medium"
-            style={{ fontFamily: 'var(--font-heading)' }}
-          >
-            Mainframe®
-          </span>
-          <span
-            className="text-[25px] sm:text-[30px] text-white select-none leading-none inline-block"
-            style={{ letterSpacing: '-0.02em' }}
-            aria-hidden="true"
-          >
-            ✳︎
-          </span>
-        </a>
-
-        {/* Desktop nav links (center, hidden below md) */}
-        <nav
-          className="hidden md:flex flex-row items-center text-[23px] text-white font-normal"
-          aria-label="Main navigation"
-        >
-          {NAV_LINKS.map((link, idx) => (
-            <React.Fragment key={link.label}>
-              <a
-                href={link.href}
-                className="hover:opacity-60 transition-opacity cursor-pointer"
-              >
-                {link.label}
-              </a>
-              {idx < NAV_LINKS.length - 1 && <span>,&nbsp;</span>}
-            </React.Fragment>
-          ))}
-        </nav>
-
-        {/* Desktop CTA (right, hidden below md) */}
-        <div className="hidden md:block">
-          <a
-            href="#contact"
-            className="text-[23px] text-white underline underline-offset-2 hover:opacity-60 transition-opacity cursor-pointer"
-          >
-            Get in touch
-          </a>
-        </div>
-
-        {/* Mobile hamburger (visible below md) */}
-        <button
-          type="button"
-          onClick={toggleMenu}
-          className="md:hidden flex flex-col justify-center items-center gap-[5px] w-8 h-8 focus:outline-none z-20 cursor-pointer"
-          aria-label={isOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={isOpen}
-        >
-          <span
-            className={`w-6 h-[2px] bg-white transition-all duration-300 origin-center ${
-              isOpen ? 'rotate-45 translate-y-[7px]' : ''
-            }`}
-          />
-          <span
-            className={`w-6 h-[2px] bg-white transition-all duration-300 ${
-              isOpen ? 'opacity-0' : 'opacity-100'
-            }`}
-          />
-          <span
-            className={`w-6 h-[2px] bg-white transition-all duration-300 origin-center ${
-              isOpen ? '-rotate-45 -translate-y-[7px]' : ''
-            }`}
-          />
-        </button>
-      </header>
-
-      {/* Mobile overlay (z-index: 9) */}
-      <div
-        className={`fixed inset-0 bg-black/90 backdrop-blur-md flex flex-col justify-center px-8 gap-8 z-[9] md:hidden transition-opacity duration-300 ${
-          isOpen
-            ? 'opacity-100 pointer-events-auto'
-            : 'opacity-0 pointer-events-none'
-        }`}
-        aria-hidden={!isOpen}
-      >
-        <nav className="flex flex-col gap-6" aria-label="Mobile navigation">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              onClick={closeMenu}
-              className="text-[32px] font-medium text-white hover:opacity-70 transition-opacity"
+    <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-nav-bg border-b border-accent-purple/10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 sm:h-20">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2 group">
+            <motion.div
+              whileHover={{ rotate: 10, scale: 1.1 }}
+              className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary to-accent-purple flex items-center justify-center shadow-lg"
             >
-              {link.label}
-            </a>
-          ))}
-          <a
-            href="#contact"
-            onClick={closeMenu}
-            className="text-[32px] font-medium text-white underline underline-offset-4 hover:opacity-70 transition-opacity mt-4"
+              <BookOpen className="w-5 h-5 text-white" />
+            </motion.div>
+            <span
+              className="text-2xl sm:text-3xl font-bold gradient-text"
+              style={{ fontFamily: "var(--font-fredoka)" }}
+            >
+              Oufella
+            </span>
+          </Link>
+
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center gap-1">
+            <NavLink href="/">Home</NavLink>
+
+            {/* Categories Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => setIsCategoryOpen(true)}
+              onMouseLeave={() => setIsCategoryOpen(false)}
+            >
+              <button className="flex items-center gap-1 px-4 py-2 rounded-xl text-foreground/70 hover:text-foreground hover:bg-accent-yellow/10 transition-all font-medium">
+                Categories
+                <ChevronDown
+                  className={`w-4 h-4 transition-transform ${isCategoryOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+
+              <AnimatePresence>
+                {isCategoryOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-full left-0 mt-1 w-64 bg-white rounded-2xl shadow-xl border border-accent-purple/10 p-3 space-y-1"
+                  >
+                    {categoryGroups.map((group) => (
+                      <div key={group.id}>
+                        <p className="text-xs font-semibold text-foreground/40 uppercase tracking-wider px-3 py-1">
+                          {group.name}
+                        </p>
+                        {categories
+                          .filter((c) => c.group === group.id)
+                          .map((cat) => (
+                            <Link
+                              key={cat.id}
+                              href={`/categories/${cat.id}`}
+                              className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-accent-yellow/10 transition-colors group"
+                            >
+                              <span
+                                className="w-3 h-3 rounded-full"
+                                style={{ backgroundColor: cat.color }}
+                              />
+                              <span className="text-sm font-medium text-foreground/70 group-hover:text-foreground transition-colors">
+                                {cat.name}
+                              </span>
+                            </Link>
+                          ))}
+                      </div>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            <NavLink href="/#about">About</NavLink>
+          </div>
+
+          {/* Right Side */}
+          <div className="hidden md:flex items-center gap-3">
+            {/* Social icons (small) */}
+            <div className="flex items-center gap-1">
+              <SocialIcon href={socialLinks.instagram} label="Instagram">
+                <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                </svg>
+              </SocialIcon>
+              <SocialIcon href={socialLinks.youtube} label="YouTube">
+                <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                </svg>
+              </SocialIcon>
+            </div>
+
+            <Link
+              href="/sign-in"
+              className="px-5 py-2.5 bg-gradient-to-r from-primary to-accent-purple text-white rounded-full font-semibold text-sm shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:scale-105 transition-all"
+            >
+              Sign In
+            </Link>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setIsMobileOpen(!isMobileOpen)}
+            className="md:hidden p-2 rounded-xl hover:bg-accent-yellow/10 transition-colors"
           >
-            Get in touch
-          </a>
-        </nav>
+            {isMobileOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
+          </motion.button>
+        </div>
       </div>
-    </>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden overflow-hidden bg-white/95 backdrop-blur-md border-t border-accent-purple/10"
+          >
+            <div className="px-4 py-4 space-y-2">
+              <MobileLink href="/" onClick={() => setIsMobileOpen(false)}>
+                Home
+              </MobileLink>
+
+              <p className="text-xs font-semibold text-foreground/40 uppercase tracking-wider px-4 pt-3">
+                Puzzle Books
+              </p>
+              {categories
+                .filter((c) => c.group === "puzzle-books")
+                .map((cat) => (
+                  <MobileLink
+                    key={cat.id}
+                    href={`/categories/${cat.id}`}
+                    onClick={() => setIsMobileOpen(false)}
+                  >
+                    <span
+                      className="w-2.5 h-2.5 rounded-full inline-block mr-2"
+                      style={{ backgroundColor: cat.color }}
+                    />
+                    {cat.name}
+                  </MobileLink>
+                ))}
+
+              <p className="text-xs font-semibold text-foreground/40 uppercase tracking-wider px-4 pt-3">
+                Hidden Pictures
+              </p>
+              {categories
+                .filter((c) => c.group === "hidden-pictures")
+                .map((cat) => (
+                  <MobileLink
+                    key={cat.id}
+                    href={`/categories/${cat.id}`}
+                    onClick={() => setIsMobileOpen(false)}
+                  >
+                    <span
+                      className="w-2.5 h-2.5 rounded-full inline-block mr-2"
+                      style={{ backgroundColor: cat.color }}
+                    />
+                    {cat.name}
+                  </MobileLink>
+                ))}
+
+              <MobileLink href="/#about" onClick={() => setIsMobileOpen(false)}>
+                About Us
+              </MobileLink>
+
+              <div className="pt-3 border-t border-accent-purple/10">
+                <Link
+                  href="/sign-in"
+                  onClick={() => setIsMobileOpen(false)}
+                  className="block w-full text-center px-5 py-3 bg-gradient-to-r from-primary to-accent-purple text-white rounded-2xl font-semibold shadow-lg"
+                >
+                  Sign In
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
   );
-};
+}
+
+function NavLink({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      className="px-4 py-2 rounded-xl text-foreground/70 hover:text-foreground hover:bg-accent-yellow/10 transition-all font-medium"
+    >
+      {children}
+    </Link>
+  );
+}
+
+function MobileLink({
+  href,
+  children,
+  onClick,
+}: {
+  href: string;
+  children: React.ReactNode;
+  onClick: () => void;
+}) {
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      className="block px-4 py-2.5 rounded-xl text-foreground/70 hover:text-foreground hover:bg-accent-yellow/10 transition-all font-medium"
+    >
+      {children}
+    </Link>
+  );
+}
+
+function SocialIcon({
+  href,
+  label,
+  children,
+}: {
+  href: string;
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      className="p-2 rounded-lg text-foreground/40 hover:text-primary hover:bg-primary/10 transition-all"
+    >
+      {children}
+    </a>
+  );
+}
