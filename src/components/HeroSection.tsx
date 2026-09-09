@@ -147,6 +147,50 @@ export default function HeroSection() {
                 preload="auto"
                 className="w-full h-full object-cover object-[82%_center] select-none pointer-events-none"
               />
+
+              {/* Animated Speech Bubble */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0, y: 15 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 350,
+                  damping: 18,
+                  delay: 1.3,
+                }}
+                className="absolute top-[18%] left-[14%] sm:top-[20%] sm:left-[20%] z-20 select-none pointer-events-none"
+              >
+                <motion.div
+                  animate={{ y: [0, -5, 0] }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 3,
+                    ease: "easeInOut",
+                  }}
+                  className="relative px-3.5 py-1.5 sm:px-5 sm:py-2.5 bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-xl shadow-accent-purple/10 border-2 border-accent-yellow/50 flex items-center gap-1.5"
+                >
+                  <span
+                    className="text-xs sm:text-base font-bold text-foreground tracking-wide whitespace-nowrap"
+                    style={{ fontFamily: "var(--font-fredoka)" }}
+                  >
+                    Hello Friend!
+                  </span>
+                  <motion.span
+                    className="inline-block text-sm sm:text-lg"
+                    animate={{ rotate: [0, 15, -15, 0] }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 2.5,
+                      ease: "easeInOut",
+                    }}
+                  >
+                    🌼
+                  </motion.span>
+
+                  {/* Speech bubble pointer tail directed at the boy */}
+                  <div className="absolute -bottom-1.5 right-4 sm:right-6 w-3 h-3 sm:w-3.5 sm:h-3.5 bg-white border-r-2 border-b-2 border-accent-yellow/50 rotate-45" />
+                </motion.div>
+              </motion.div>
             </div>
 
             {/* Floating badge */}
