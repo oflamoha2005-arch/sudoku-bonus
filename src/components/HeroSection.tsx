@@ -7,7 +7,7 @@ import { assetPath } from "@/utils/paths";
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden pt-20">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-4 sm:pb-6">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#FFF5E6] via-[#FFEEF0] to-[#EDE7FF]" />
 
@@ -52,29 +52,29 @@ export default function HeroSection() {
         delay={3}
       />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
-        <div className="grid lg:grid-cols-12 gap-8 lg:gap-8 xl:gap-12 items-center">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 w-full">
+        <div className="grid lg:grid-cols-12 gap-6 lg:gap-8 xl:gap-10 items-center">
           {/* Text Content */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="order-2 lg:order-1 lg:col-span-6 xl:col-span-5"
+            className="order-2 lg:order-1 lg:col-span-6 xl:col-span-6"
           >
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-sm rounded-full border border-accent-purple/20 mb-6"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white/60 backdrop-blur-sm rounded-full border border-accent-purple/20 mb-3 sm:mb-4"
             >
               <span className="w-2 h-2 rounded-full bg-accent-green animate-pulse" />
-              <span className="text-sm font-medium text-foreground/70">
+              <span className="text-xs sm:text-sm font-medium text-foreground/70">
                 ✨ Meet Oufella — Activity Books for Curious Kids
               </span>
             </motion.div>
 
             <h1
-              className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight mb-6"
+              className="text-4xl sm:text-5xl lg:text-5xl xl:text-[3.5rem] font-bold leading-[1.15] mb-3 sm:mb-4"
               style={{ fontFamily: "var(--font-fredoka)" }}
             >
               Where Learning Feels Like{" "}
@@ -88,16 +88,16 @@ export default function HeroSection() {
               </motion.span>
             </h1>
 
-            <p className="text-lg sm:text-xl text-foreground/70 leading-relaxed mb-8 max-w-xl">
+            <p className="text-sm sm:text-base lg:text-lg text-foreground/70 leading-relaxed mb-5 sm:mb-6 max-w-xl">
               Welcome to <strong>Oufella</strong>! We craft a vibrant, screen-free world of
               activity books — packed with brain-boosting puzzles, winding mazes, word searches,
               fill-ins, and hidden pictures designed to spark joy and make learning an absolute blast.
             </p>
 
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-3 sm:gap-4">
               <Link
                 href="/#categories"
-                className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary to-accent-purple text-white rounded-full font-bold text-lg shadow-xl shadow-primary/25 hover:shadow-2xl hover:shadow-primary/30 hover:scale-105 transition-all"
+                className="group inline-flex items-center gap-2 px-6 py-3 sm:px-7 sm:py-3.5 bg-gradient-to-r from-primary to-accent-purple text-white rounded-full font-bold text-base sm:text-lg shadow-xl shadow-primary/25 hover:shadow-2xl hover:shadow-primary/30 hover:scale-105 transition-all"
               >
                 Explore The Collection
                 <motion.span
@@ -109,14 +109,14 @@ export default function HeroSection() {
               </Link>
               <Link
                 href="/#teaser"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-white/70 backdrop-blur-sm text-foreground rounded-full font-bold text-lg border-2 border-accent-yellow/30 hover:border-accent-yellow hover:bg-accent-yellow/10 transition-all"
+                className="inline-flex items-center gap-2 px-6 py-3 sm:px-7 sm:py-3.5 bg-white/70 backdrop-blur-sm text-foreground rounded-full font-bold text-base sm:text-lg border-2 border-accent-yellow/30 hover:border-accent-yellow hover:bg-accent-yellow/10 transition-all"
               >
                 Play a Mini Game 🎯
               </Link>
             </div>
 
             {/* Stats */}
-            <div className="flex gap-8 mt-10">
+            <div className="flex gap-6 sm:gap-8 mt-5 sm:mt-6">
               <Stat number="50+" label="Activity Books" />
               <Stat number="100%" label="Screen-Free Fun" />
               <Stat number="⭐ 5-Star" label="Kid & Parent Loved" />
@@ -128,15 +128,15 @@ export default function HeroSection() {
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-            className="order-1 lg:order-2 lg:col-span-6 xl:col-span-7 relative mb-6 lg:mb-0 w-full max-w-[620px] lg:max-w-none ml-auto z-10"
+            className="order-1 lg:order-2 lg:col-span-6 xl:col-span-6 relative mb-4 lg:mb-0 w-full max-w-[480px] lg:max-w-[500px] xl:max-w-[530px] ml-auto z-10"
           >
             {/* Ambient soft pastel glow behind card */}
             <div
-              className="absolute -inset-5 bg-gradient-to-tr from-[#FF8FAB]/25 via-[#FFD93D]/20 to-[#B388FF]/25 rounded-[2.5rem] blur-3xl -z-10"
+              className="absolute -inset-4 bg-gradient-to-tr from-[#FF8FAB]/25 via-[#FFD93D]/20 to-[#B388FF]/25 rounded-[2.5rem] blur-2xl -z-10"
               aria-hidden="true"
             />
 
-            <div className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl shadow-accent-purple/25 border-4 border-white/75 bg-gradient-to-br from-[#FFF5E6] via-[#FFEEF0] to-[#EDE7FF]">
+            <div className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl shadow-accent-purple/20 border-4 border-white/75 bg-gradient-to-br from-[#FFF5E6] via-[#FFEEF0] to-[#EDE7FF]">
               <video
                 src={assetPath("/video/Boy_waving_hello_animation.mp4")}
                 autoPlay
@@ -145,10 +145,10 @@ export default function HeroSection() {
                 playsInline
                 controls={false}
                 preload="auto"
-                className="w-full h-full object-cover object-[82%_center] scale-[1.08] origin-[82%_center] select-none pointer-events-none"
+                className="w-full h-full object-cover object-[82%_center] scale-[1.06] origin-[82%_center] select-none pointer-events-none"
               />
 
-              {/* Animated Speech Bubble — Enriched & Bigger */}
+              {/* Animated Speech Bubble */}
               <motion.div
                 initial={{ opacity: 0, scale: 0, y: 15 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -161,22 +161,22 @@ export default function HeroSection() {
                 className="absolute top-[14%] left-[10%] sm:top-[16%] sm:left-[14%] z-20 select-none pointer-events-none"
               >
                 <motion.div
-                  animate={{ y: [0, -6, 0] }}
+                  animate={{ y: [0, -5, 0] }}
                   transition={{
                     repeat: Infinity,
                     duration: 3,
                     ease: "easeInOut",
                   }}
-                  className="relative px-4 py-2 sm:px-6 sm:py-3 bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-2xl shadow-accent-purple/15 border-[2.5px] border-accent-yellow flex items-center gap-2"
+                  className="relative px-3.5 py-1.5 sm:px-5 sm:py-2.5 bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-xl shadow-accent-purple/15 border-2 border-accent-yellow flex items-center gap-1.5"
                 >
                   <span
-                    className="text-sm sm:text-lg md:text-xl font-extrabold text-foreground tracking-wide whitespace-nowrap"
+                    className="text-xs sm:text-base md:text-lg font-extrabold text-foreground tracking-wide whitespace-nowrap"
                     style={{ fontFamily: "var(--font-fredoka)" }}
                   >
                     Hello Friend!
                   </span>
                   <motion.span
-                    className="inline-block text-base sm:text-2xl"
+                    className="inline-block text-sm sm:text-xl"
                     animate={{ rotate: [0, 15, -15, 0] }}
                     transition={{
                       repeat: Infinity,
@@ -188,7 +188,7 @@ export default function HeroSection() {
                   </motion.span>
 
                   {/* Speech bubble pointer tail directed at the boy */}
-                  <div className="absolute -bottom-2 right-5 sm:right-7 w-3.5 h-3.5 sm:w-4 sm:h-4 bg-white border-r-[2.5px] border-b-[2.5px] border-accent-yellow rotate-45" />
+                  <div className="absolute -bottom-1.5 right-4 sm:right-6 w-3 h-3 sm:w-3.5 sm:h-3.5 bg-white border-r-2 border-b-2 border-accent-yellow rotate-45" />
                 </motion.div>
               </motion.div>
             </div>
