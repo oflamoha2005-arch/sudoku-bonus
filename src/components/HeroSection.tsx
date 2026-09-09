@@ -150,7 +150,7 @@ export default function HeroSection() {
 
               {/* Sequential Animated Speech Bubbles */}
               <div className="absolute top-[5%] sm:top-[6%] left-[4%] sm:left-[6%] z-20 select-none pointer-events-none flex flex-col gap-1.5 sm:gap-2 items-start max-w-[56%] sm:max-w-[52%]">
-                {/* Bubble 1: Hello Friend! */}
+                {/* Bubble 1: Hello Friend! (appears after 1s) */}
                 <motion.div
                   initial={{ opacity: 0, scale: 0, y: 12 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -158,7 +158,7 @@ export default function HeroSection() {
                     type: "spring",
                     stiffness: 350,
                     damping: 18,
-                    delay: 1.2,
+                    delay: 1.0,
                   }}
                 >
                   <motion.div
@@ -191,7 +191,7 @@ export default function HeroSection() {
                   </motion.div>
                 </motion.div>
 
-                {/* Bubble 2: Welcome to Oufella! (1s after Bubble 1) */}
+                {/* Bubble 2: Welcome to Oufella! (2s after Bubble 1 -> 3.0s) */}
                 <motion.div
                   initial={{ opacity: 0, scale: 0, y: 12 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -199,7 +199,7 @@ export default function HeroSection() {
                     type: "spring",
                     stiffness: 350,
                     damping: 18,
-                    delay: 2.2,
+                    delay: 3.0,
                   }}
                 >
                   <motion.div
@@ -233,7 +233,7 @@ export default function HeroSection() {
                   </motion.div>
                 </motion.div>
 
-                {/* Bubble 3: Explore our fun books! (1s after Bubble 2) */}
+                {/* Bubble 3: Explore our fun books! (2s after Bubble 2 -> 5.0s) */}
                 <motion.div
                   initial={{ opacity: 0, scale: 0, y: 12 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -241,7 +241,7 @@ export default function HeroSection() {
                     type: "spring",
                     stiffness: 350,
                     damping: 18,
-                    delay: 3.2,
+                    delay: 5.0,
                   }}
                 >
                   <motion.div
@@ -275,7 +275,7 @@ export default function HeroSection() {
                   </motion.div>
                 </motion.div>
 
-                {/* Bubble 4: Grab a Free Book! (1s after Bubble 3) */}
+                {/* Bubble 4: Grab a Free Book! (2s after Bubble 3 -> 7.0s) */}
                 <motion.div
                   initial={{ opacity: 0, scale: 0, y: 12 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -283,7 +283,7 @@ export default function HeroSection() {
                     type: "spring",
                     stiffness: 350,
                     damping: 18,
-                    delay: 4.2,
+                    delay: 7.0,
                   }}
                 >
                   <motion.div
@@ -317,7 +317,7 @@ export default function HeroSection() {
                   </motion.div>
                 </motion.div>
 
-                {/* Bubble 5: New Book Just Dropped (1s after Bubble 4) */}
+                {/* Bubble 5: New Book Just Dropped (2s after Bubble 4 -> 9.0s) */}
                 <motion.div
                   initial={{ opacity: 0, scale: 0, y: 12 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -325,7 +325,7 @@ export default function HeroSection() {
                     type: "spring",
                     stiffness: 350,
                     damping: 18,
-                    delay: 5.2,
+                    delay: 9.0,
                   }}
                 >
                   <motion.div
@@ -359,7 +359,7 @@ export default function HeroSection() {
                   </motion.div>
                 </motion.div>
 
-                {/* Bubble 6: Made With Love, Just for You! (2s after Bubble 5) */}
+                {/* Bubble 6: Made With Love, Just for You! (2s after Bubble 5 -> 11.0s) */}
                 <motion.div
                   initial={{ opacity: 0, scale: 0, y: 12 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -367,7 +367,7 @@ export default function HeroSection() {
                     type: "spring",
                     stiffness: 350,
                     damping: 18,
-                    delay: 7.2,
+                    delay: 11.0,
                   }}
                 >
                   <motion.div
