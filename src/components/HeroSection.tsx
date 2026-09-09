@@ -59,6 +59,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
+            className="order-2 lg:order-1"
           >
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -127,7 +128,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-            className="relative mt-8 lg:mt-0 w-full max-w-[580px] lg:max-w-none ml-auto z-10"
+            className="order-1 lg:order-2 relative mb-4 lg:mb-0 w-full max-w-[580px] lg:max-w-none ml-auto z-10"
           >
             {/* Ambient soft pastel glow behind card */}
             <div
