@@ -53,13 +53,13 @@ export default function HeroSection() {
       />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-8 xl:gap-12 items-center">
           {/* Text Content */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="order-2 lg:order-1"
+            className="order-2 lg:order-1 lg:col-span-6 xl:col-span-5"
           >
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -128,15 +128,15 @@ export default function HeroSection() {
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-            className="order-1 lg:order-2 relative mb-4 lg:mb-0 w-full max-w-[580px] lg:max-w-none ml-auto z-10"
+            className="order-1 lg:order-2 lg:col-span-6 xl:col-span-7 relative mb-6 lg:mb-0 w-full max-w-[620px] lg:max-w-none ml-auto z-10"
           >
             {/* Ambient soft pastel glow behind card */}
             <div
-              className="absolute -inset-4 bg-gradient-to-tr from-[#FF8FAB]/25 via-[#FFD93D]/20 to-[#B388FF]/25 rounded-[2.5rem] blur-2xl -z-10"
+              className="absolute -inset-5 bg-gradient-to-tr from-[#FF8FAB]/25 via-[#FFD93D]/20 to-[#B388FF]/25 rounded-[2.5rem] blur-3xl -z-10"
               aria-hidden="true"
             />
 
-            <div className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl shadow-accent-purple/20 border-4 border-white/70 bg-gradient-to-br from-[#FFF5E6] via-[#FFEEF0] to-[#EDE7FF]">
+            <div className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl shadow-accent-purple/25 border-4 border-white/75 bg-gradient-to-br from-[#FFF5E6] via-[#FFEEF0] to-[#EDE7FF]">
               <video
                 src={assetPath("/video/Boy_waving_hello_animation.mp4")}
                 autoPlay
@@ -145,10 +145,10 @@ export default function HeroSection() {
                 playsInline
                 controls={false}
                 preload="auto"
-                className="w-full h-full object-cover object-[82%_center] select-none pointer-events-none"
+                className="w-full h-full object-cover object-[82%_center] scale-[1.08] origin-[82%_center] select-none pointer-events-none"
               />
 
-              {/* Animated Speech Bubble */}
+              {/* Animated Speech Bubble — Enriched & Bigger */}
               <motion.div
                 initial={{ opacity: 0, scale: 0, y: 15 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -158,25 +158,25 @@ export default function HeroSection() {
                   damping: 18,
                   delay: 1.3,
                 }}
-                className="absolute top-[18%] left-[14%] sm:top-[20%] sm:left-[20%] z-20 select-none pointer-events-none"
+                className="absolute top-[14%] left-[10%] sm:top-[16%] sm:left-[14%] z-20 select-none pointer-events-none"
               >
                 <motion.div
-                  animate={{ y: [0, -5, 0] }}
+                  animate={{ y: [0, -6, 0] }}
                   transition={{
                     repeat: Infinity,
                     duration: 3,
                     ease: "easeInOut",
                   }}
-                  className="relative px-3.5 py-1.5 sm:px-5 sm:py-2.5 bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-xl shadow-accent-purple/10 border-2 border-accent-yellow/50 flex items-center gap-1.5"
+                  className="relative px-4 py-2 sm:px-6 sm:py-3 bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-2xl shadow-accent-purple/15 border-[2.5px] border-accent-yellow flex items-center gap-2"
                 >
                   <span
-                    className="text-xs sm:text-base font-bold text-foreground tracking-wide whitespace-nowrap"
+                    className="text-sm sm:text-lg md:text-xl font-extrabold text-foreground tracking-wide whitespace-nowrap"
                     style={{ fontFamily: "var(--font-fredoka)" }}
                   >
                     Hello Friend!
                   </span>
                   <motion.span
-                    className="inline-block text-sm sm:text-lg"
+                    className="inline-block text-base sm:text-2xl"
                     animate={{ rotate: [0, 15, -15, 0] }}
                     transition={{
                       repeat: Infinity,
@@ -188,7 +188,7 @@ export default function HeroSection() {
                   </motion.span>
 
                   {/* Speech bubble pointer tail directed at the boy */}
-                  <div className="absolute -bottom-1.5 right-4 sm:right-6 w-3 h-3 sm:w-3.5 sm:h-3.5 bg-white border-r-2 border-b-2 border-accent-yellow/50 rotate-45" />
+                  <div className="absolute -bottom-2 right-5 sm:right-7 w-3.5 h-3.5 sm:w-4 sm:h-4 bg-white border-r-[2.5px] border-b-[2.5px] border-accent-yellow rotate-45" />
                 </motion.div>
               </motion.div>
             </div>
