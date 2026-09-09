@@ -148,49 +148,136 @@ export default function HeroSection() {
                 className="w-full h-full object-cover object-[82%_center] scale-[1.06] origin-[82%_center] select-none pointer-events-none"
               />
 
-              {/* Animated Speech Bubble */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0, y: 15 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 350,
-                  damping: 18,
-                  delay: 1.3,
-                }}
-                className="absolute top-[14%] left-[10%] sm:top-[16%] sm:left-[14%] z-20 select-none pointer-events-none"
-              >
+              {/* Sequential Animated Speech Bubbles */}
+              <div className="absolute top-[7%] sm:top-[9%] left-[5%] sm:left-[7%] z-20 select-none pointer-events-none flex flex-col gap-2 sm:gap-2.5 items-start">
+                {/* Bubble 1: Hello Friend! */}
                 <motion.div
-                  animate={{ y: [0, -5, 0] }}
+                  initial={{ opacity: 0, scale: 0, y: 15 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
                   transition={{
-                    repeat: Infinity,
-                    duration: 3,
-                    ease: "easeInOut",
+                    type: "spring",
+                    stiffness: 350,
+                    damping: 18,
+                    delay: 1.2,
                   }}
-                  className="relative px-3.5 py-1.5 sm:px-5 sm:py-2.5 bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-xl shadow-accent-purple/15 border-2 border-accent-yellow flex items-center gap-1.5"
                 >
-                  <span
-                    className="text-xs sm:text-base md:text-lg font-extrabold text-foreground tracking-wide whitespace-nowrap"
-                    style={{ fontFamily: "var(--font-fredoka)" }}
-                  >
-                    Hello Friend!
-                  </span>
-                  <motion.span
-                    className="inline-block text-sm sm:text-xl"
-                    animate={{ rotate: [0, 15, -15, 0] }}
+                  <motion.div
+                    animate={{ y: [0, -4, 0] }}
                     transition={{
                       repeat: Infinity,
-                      duration: 2.5,
+                      duration: 3,
                       ease: "easeInOut",
                     }}
+                    className="relative px-3 py-1 sm:px-4 sm:py-1.5 bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-lg shadow-accent-purple/15 border-2 border-accent-yellow flex items-center gap-1.5"
                   >
-                    🌼
-                  </motion.span>
-
-                  {/* Speech bubble pointer tail directed at the boy */}
-                  <div className="absolute -bottom-1.5 right-4 sm:right-6 w-3 h-3 sm:w-3.5 sm:h-3.5 bg-white border-r-2 border-b-2 border-accent-yellow rotate-45" />
+                    <span
+                      className="text-xs sm:text-sm md:text-base font-extrabold text-foreground tracking-wide whitespace-nowrap"
+                      style={{ fontFamily: "var(--font-fredoka)" }}
+                    >
+                      Hello Friend!
+                    </span>
+                    <motion.span
+                      className="inline-block text-sm sm:text-lg"
+                      animate={{ rotate: [0, 15, -15, 0] }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 2.5,
+                        ease: "easeInOut",
+                      }}
+                    >
+                      🌼
+                    </motion.span>
+                    {/* Pointer tail */}
+                    <div className="absolute -bottom-1 right-3 sm:right-4 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-white border-r-2 border-b-2 border-accent-yellow rotate-45" />
+                  </motion.div>
                 </motion.div>
-              </motion.div>
+
+                {/* Bubble 2: Welcome to Oufella! (1s after Bubble 1) */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0, y: 15 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 350,
+                    damping: 18,
+                    delay: 2.2,
+                  }}
+                >
+                  <motion.div
+                    animate={{ y: [0, -4, 0] }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 3,
+                      delay: 0.4,
+                      ease: "easeInOut",
+                    }}
+                    className="relative px-3 py-1 sm:px-4 sm:py-1.5 bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-lg shadow-accent-purple/15 border-2 border-accent-yellow flex items-center gap-1.5"
+                  >
+                    <span
+                      className="text-xs sm:text-sm md:text-base font-extrabold text-foreground tracking-wide whitespace-nowrap"
+                      style={{ fontFamily: "var(--font-fredoka)" }}
+                    >
+                      Welcome to <span className="text-primary font-black">Oufella</span>!
+                    </span>
+                    <motion.span
+                      className="inline-block text-sm sm:text-lg"
+                      animate={{ scale: [1, 1.25, 1] }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 2,
+                        ease: "easeInOut",
+                      }}
+                    >
+                      ✨
+                    </motion.span>
+                    {/* Pointer tail */}
+                    <div className="absolute -bottom-1 right-3 sm:right-4 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-white border-r-2 border-b-2 border-accent-yellow rotate-45" />
+                  </motion.div>
+                </motion.div>
+
+                {/* Bubble 3: Explore our fun books! (1s after Bubble 2) */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0, y: 15 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 350,
+                    damping: 18,
+                    delay: 3.2,
+                  }}
+                >
+                  <motion.div
+                    animate={{ y: [0, -4, 0] }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 3,
+                      delay: 0.8,
+                      ease: "easeInOut",
+                    }}
+                    className="relative px-3 py-1 sm:px-4 sm:py-1.5 bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-lg shadow-accent-purple/15 border-2 border-accent-yellow flex items-center gap-1.5"
+                  >
+                    <span
+                      className="text-xs sm:text-sm md:text-base font-extrabold text-foreground tracking-wide whitespace-nowrap"
+                      style={{ fontFamily: "var(--font-fredoka)" }}
+                    >
+                      Explore our fun books!
+                    </span>
+                    <motion.span
+                      className="inline-block text-sm sm:text-lg"
+                      animate={{ rotate: [0, 12, -12, 0] }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 2.2,
+                        ease: "easeInOut",
+                      }}
+                    >
+                      📚
+                    </motion.span>
+                    {/* Pointer tail */}
+                    <div className="absolute -bottom-1 right-3 sm:right-4 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-white border-r-2 border-b-2 border-accent-yellow rotate-45" />
+                  </motion.div>
+                </motion.div>
+              </div>
             </div>
 
             {/* Floating badge */}
