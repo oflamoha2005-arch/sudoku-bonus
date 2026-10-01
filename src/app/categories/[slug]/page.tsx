@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { categories, getCategoryById } from "@/data/books";
+import { categories, categoryGroups, getCategoryById } from "@/data/books";
 import BookCard from "@/components/BookCard";
 import AnimatedSection from "@/components/AnimatedSection";
 import { ChevronRight } from "lucide-react";
@@ -41,6 +41,9 @@ export default async function CategoryPage({
     notFound();
   }
 
+  const groupName =
+    categoryGroups.find((g) => g.id === category.group)?.name || "Activity Books";
+
   return (
     <div className="pt-20">
       {/* Category Hero */}
@@ -77,9 +80,7 @@ export default async function CategoryPage({
                   style={{ backgroundColor: category.color }}
                 />
                 <span className="text-sm font-medium text-foreground/50 uppercase tracking-wider">
-                  {category.group === "puzzle-books"
-                    ? "Puzzle Books"
-                    : "Hidden Pictures"}
+                  {groupName}
                 </span>
               </div>
 
@@ -136,7 +137,7 @@ export default async function CategoryPage({
               className="text-3xl font-bold"
               style={{ fontFamily: "var(--font-fredoka)" }}
             >
-              Our {category.name} Books
+              {category.name.endsWith("Books") ? `Our ${category.name}` : `Our ${category.name} Books`}
             </h2>
             <p className="text-foreground/50 mt-2">
               Click any book to buy it on Amazon — all books ship worldwide!

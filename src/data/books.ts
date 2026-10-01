@@ -4,12 +4,13 @@ export interface Book {
   cover: string;
   amazonUrl: string;
   description: string;
+  badge?: string;
 }
 
 export interface Category {
   id: string;
   name: string;
-  group: "puzzle-books" | "hidden-pictures";
+  group: "puzzle-books" | "coloring-books" | string;
   description: string;
   longDescription: string;
   illustration: string;
@@ -21,86 +22,25 @@ export interface Category {
 
 export const categories: Category[] = [
   {
-    id: "sudoku",
-    name: "Sudoku",
-    group: "puzzle-books",
-    description: "Fun number puzzles that boost logical thinking!",
+    id: "coloring-books",
+    name: "Coloring Books",
+    group: "coloring-books",
+    description: "Heartwarming, cozy coloring adventures designed to inspire creativity!",
     longDescription:
-      "Our Sudoku books are specially designed for young minds! Starting from easy 4×4 grids and progressing to challenging 9×9 puzzles, each book is packed with colorful, engaging puzzles that make learning logic and numbers an absolute blast.",
-    illustration: "/illustrations/sudoku.jpg",
-    color: "#6EC6FF",
-    gradientFrom: "#6EC6FF",
-    gradientTo: "#3B82F6",
+      "Immerse yourself in delightful, stress-free coloring adventures! Packed with cute characters, imaginative worlds, and charming scenes crafted to bring relaxation, mindfulness, and creative fun.",
+    illustration: "/covers/capybara-axolotl-coloring.jpg",
+    color: "#FF8FAB",
+    gradientFrom: "#FF8FAB",
+    gradientTo: "#FF6B8B",
     books: [
       {
-        id: "sudoku-easy-1",
-        title: "Easy Sudoku for Kids Vol. 1",
-        cover: "/covers/sudoku-easy-1.jpg",
-        amazonUrl: "https://amazon.com/dp/PLACEHOLDER",
-        description: "50+ exciting sudoku puzzles for beginners ages 6-10",
-      },
-      {
-        id: "sudoku-easy-2",
-        title: "Sudoku Fun: Brain Teasers",
-        cover: "/covers/sudoku-easy-1.jpg",
-        amazonUrl: "https://amazon.com/dp/PLACEHOLDER",
-        description: "Colorful sudoku challenges for clever kids",
-      },
-    ],
-  },
-  {
-    id: "mazes",
-    name: "Mazes",
-    group: "puzzle-books",
-    description: "Exciting adventures through twisting paths!",
-    longDescription:
-      "Get ready for an adventure! Our maze books take kids on incredible journeys through twisting, turning paths. From simple paths for beginners to mind-bending labyrinths for maze masters, every page is a new adventure waiting to be explored.",
-    illustration: "/illustrations/mazes.jpg",
-    color: "#FF6B6B",
-    gradientFrom: "#FF6B6B",
-    gradientTo: "#E55D5D",
-    books: [
-      {
-        id: "mazes-adventure-1",
-        title: "Amazing Mazes for Kids",
-        cover: "/covers/mazes-adventure-1.jpg",
-        amazonUrl: "https://amazon.com/dp/PLACEHOLDER",
-        description: "Over 50 exciting maze challenges for ages 4-8",
-      },
-      {
-        id: "mazes-adventure-2",
-        title: "Maze Master Challenge",
-        cover: "/covers/mazes-adventure-1.jpg",
-        amazonUrl: "https://amazon.com/dp/PLACEHOLDER",
-        description: "Advanced mazes for young puzzle champions",
-      },
-    ],
-  },
-  {
-    id: "fill-in",
-    name: "Fill-in Puzzles",
-    group: "puzzle-books",
-    description: "Word puzzles that expand vocabulary & spelling!",
-    longDescription:
-      "Fill-in puzzles are a fantastic way to boost vocabulary and spelling skills! Kids fit words into crossword-style grids, learning new words while having tons of fun. Each book includes puzzles of varying difficulty levels.",
-    illustration: "/illustrations/fill-in.jpg",
-    color: "#FFD93D",
-    gradientFrom: "#FFD93D",
-    gradientTo: "#F59E0B",
-    books: [
-      {
-        id: "fillin-fun-1",
-        title: "Fill-in Puzzles Fun",
-        cover: "/covers/fillin-fun-1.jpg",
-        amazonUrl: "https://amazon.com/dp/PLACEHOLDER",
-        description: "Criss-cross puzzles, word searches & more!",
-      },
-      {
-        id: "fillin-fun-2",
-        title: "Word Fill-in Adventures",
-        cover: "/covers/fillin-fun-1.jpg",
-        amazonUrl: "https://amazon.com/dp/PLACEHOLDER",
-        description: "Hours of word-fitting fun for young minds",
+        id: "cozy-capybara-axolotl-coloring",
+        title: "Cozy Capybara and Axolotl Coloring Book",
+        cover: "/covers/capybara-axolotl-coloring.jpg",
+        amazonUrl: "#",
+        badge: "Coloring Book",
+        description:
+          "A cozy and adorable space-themed coloring adventure featuring capybara and axolotl friends exploring the cosmos. Dream, explore, and color!",
       },
     ],
   },
@@ -108,55 +48,45 @@ export const categories: Category[] = [
     id: "word-search",
     name: "Word Search",
     group: "puzzle-books",
-    description: "Find hidden words in a grid of letters!",
+    description: "Relaxing large-print word search collections to unwind and recharge!",
     longDescription:
-      "Our word search books are perfect for budding word detectives! Each puzzle hides exciting words in a grid of letters, and kids need to find them all. With themes like animals, space, food, and more, there's something for every curious mind.",
-    illustration: "/illustrations/word-search.jpg",
+      "Our word search books offer a soothing, brain-refreshing escape! Featuring clear large-print text, enchanting seasonal themes, and engaging puzzles crafted to help you relax, unwind, and enjoy.",
+    illustration: "/covers/winter-word-search.jpg",
     color: "#4ECB71",
     gradientFrom: "#4ECB71",
     gradientTo: "#22C55E",
     books: [
       {
-        id: "wordsearch-fun-1",
-        title: "Word Search Adventures",
-        cover: "/covers/wordsearch-fun-1.jpg",
-        amazonUrl: "https://amazon.com/dp/PLACEHOLDER",
-        description: "Over 100 fun puzzles! Hours of word finding fun!",
-      },
-      {
-        id: "wordsearch-fun-2",
-        title: "Ultimate Word Hunt",
-        cover: "/covers/wordsearch-fun-1.jpg",
-        amazonUrl: "https://amazon.com/dp/PLACEHOLDER",
-        description: "Themed word searches for ages 6-9",
+        id: "winter-word-search-adults",
+        title: "Winter Word Search Book for Adults",
+        cover: "/covers/winter-word-search.jpg",
+        amazonUrl: "#",
+        badge: "Large Print",
+        description:
+          "Winter-themed large print word search puzzles for adults to relax, puzzle, unwind, and enjoy.",
       },
     ],
   },
   {
-    id: "hidden-pictures",
-    name: "Hidden Pictures",
-    group: "hidden-pictures",
-    description: "Spot the hidden objects in colorful scenes!",
+    id: "sudoku",
+    name: "Sudoku & Puzzle Books",
+    group: "puzzle-books",
+    description: "Engaging brain teasers, sudoku, and multi-puzzle challenges!",
     longDescription:
-      "Can you find them all? Our Hidden Pictures books feature beautifully illustrated scenes packed with cleverly concealed objects. Kids sharpen their observation skills while exploring vibrant, detailed illustrations. Over 100 objects to discover in every book!",
-    illustration: "/illustrations/hidden-pictures.jpg",
-    color: "#B388FF",
-    gradientFrom: "#B388FF",
-    gradientTo: "#8B5CF6",
+      "From mind-sharpening sudoku grids to intricate labyrinths and thematic puzzles, our puzzle books are crafted to challenge clever minds and provide hours of satisfying, screen-free entertainment.",
+    illustration: "/covers/halloween-raetselbuch.jpg",
+    color: "#FF9F43",
+    gradientFrom: "#FF9F43",
+    gradientTo: "#E55D5D",
     books: [
       {
-        id: "hidden-pictures-1",
-        title: "Hidden Pictures Challenge",
-        cover: "/covers/hidden-pictures-1.jpg",
-        amazonUrl: "https://amazon.com/dp/PLACEHOLDER",
-        description: "Search & find fun with over 100 objects to spot!",
-      },
-      {
-        id: "hidden-pictures-2",
-        title: "Spot It! Hidden Objects",
-        cover: "/covers/hidden-pictures-1.jpg",
-        amazonUrl: "https://amazon.com/dp/PLACEHOLDER",
-        description: "Beautifully illustrated seek & find adventures",
+        id: "halloween-raetselbuch-erwachsene",
+        title: "Halloween Rätselbuch Für Erwachsene",
+        cover: "/covers/halloween-raetselbuch.jpg",
+        amazonUrl: "#",
+        badge: "Sudoku & Puzzles",
+        description:
+          "Knifflige Rätsel für kluge Köpfe: Sudoku, Wortsuche und Labyrinthe im atmosphärischen Halloween-Design.",
       },
     ],
   },
@@ -164,14 +94,14 @@ export const categories: Category[] = [
 
 export const categoryGroups = [
   {
-    id: "puzzle-books",
-    name: "Puzzle Books",
-    description: "Brain-boosting puzzles for curious minds!",
+    id: "coloring-books",
+    name: "Coloring & Creativity",
+    description: "Relaxing and joyful coloring adventures!",
   },
   {
-    id: "hidden-pictures",
-    name: "Hidden Pictures Books",
-    description: "Find the hidden objects in every scene!",
+    id: "puzzle-books",
+    name: "Puzzle & Brain Books",
+    description: "Word search, sudoku, and multi-puzzle challenges!",
   },
 ];
 
@@ -181,4 +111,14 @@ export function getCategoryById(id: string): Category | undefined {
 
 export function getCategoriesByGroup(group: string): Category[] {
   return categories.filter((cat) => cat.group === group);
+}
+
+export function getAllBooks(): { book: Book; categoryColor: string; categoryName: string }[] {
+  return categories.flatMap((cat) =>
+    cat.books.map((b) => ({
+      book: b,
+      categoryColor: cat.color,
+      categoryName: cat.name,
+    }))
+  );
 }

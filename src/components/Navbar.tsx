@@ -143,43 +143,32 @@ export default function Navbar() {
                 Home
               </MobileLink>
 
-              <p className="text-xs font-semibold text-foreground/40 uppercase tracking-wider px-4 pt-3">
-                Puzzle Books
-              </p>
-              {categories
-                .filter((c) => c.group === "puzzle-books")
-                .map((cat) => (
-                  <MobileLink
-                    key={cat.id}
-                    href={`/categories/${cat.id}`}
-                    onClick={() => setIsMobileOpen(false)}
-                  >
-                    <span
-                      className="w-2.5 h-2.5 rounded-full inline-block mr-2"
-                      style={{ backgroundColor: cat.color }}
-                    />
-                    {cat.name}
-                  </MobileLink>
-                ))}
-
-              <p className="text-xs font-semibold text-foreground/40 uppercase tracking-wider px-4 pt-3">
-                Hidden Pictures
-              </p>
-              {categories
-                .filter((c) => c.group === "hidden-pictures")
-                .map((cat) => (
-                  <MobileLink
-                    key={cat.id}
-                    href={`/categories/${cat.id}`}
-                    onClick={() => setIsMobileOpen(false)}
-                  >
-                    <span
-                      className="w-2.5 h-2.5 rounded-full inline-block mr-2"
-                      style={{ backgroundColor: cat.color }}
-                    />
-                    {cat.name}
-                  </MobileLink>
-                ))}
+              {categoryGroups.map((group) => {
+                const groupCategories = categories.filter(
+                  (c) => c.group === group.id
+                );
+                if (groupCategories.length === 0) return null;
+                return (
+                  <div key={group.id}>
+                    <p className="text-xs font-semibold text-foreground/40 uppercase tracking-wider px-4 pt-3">
+                      {group.name}
+                    </p>
+                    {groupCategories.map((cat) => (
+                      <MobileLink
+                        key={cat.id}
+                        href={`/categories/${cat.id}`}
+                        onClick={() => setIsMobileOpen(false)}
+                      >
+                        <span
+                          className="w-2.5 h-2.5 rounded-full inline-block mr-2"
+                          style={{ backgroundColor: cat.color }}
+                        />
+                        {cat.name}
+                      </MobileLink>
+                    ))}
+                  </div>
+                );
+              })}
 
               <MobileLink href="/#about" onClick={() => setIsMobileOpen(false)}>
                 About Us
