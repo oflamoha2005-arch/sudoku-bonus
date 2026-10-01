@@ -65,6 +65,38 @@ export const categories: Category[] = [
         description:
           "Winter-themed large print word search puzzles for adults to relax, puzzle, unwind, and enjoy.",
       },
+      {
+        id: "cat-breeds-word-search",
+        title: "Cat Breeds Word Search Puzzle Book",
+        cover: "/covers/cat-breeds-word-search.jpg",
+        amazonUrl: "#",
+        badge: "Cat Edition",
+        description:
+          "An adorable cat breeds word search puzzle book packed with feline-themed puzzles for cat lovers of all ages.",
+      },
+    ],
+  },
+  {
+    id: "crosswords",
+    name: "Crossword Puzzles",
+    group: "puzzle-books",
+    description: "Relaxing large-print crossword puzzles to sharpen your mind!",
+    longDescription:
+      "Stimulate your mind and unwind with our collection of crossword puzzle books! Featuring clear, large-print grids and entertaining seasonal themes crafted for relaxing, screen-free enjoyment.",
+    illustration: "/covers/winter-crossword.png",
+    color: "#0EA5E9",
+    gradientFrom: "#38BDF8",
+    gradientTo: "#0284C7",
+    books: [
+      {
+        id: "winter-crossword-adults",
+        title: "Large Print Winter Crossword Books for Adults",
+        cover: "/covers/winter-crossword.png",
+        amazonUrl: "#",
+        badge: "Large Print",
+        description:
+          "Winter-themed large print crossword puzzles for adults to relax, unwind, and keep the mind sharp.",
+      },
     ],
   },
   {
@@ -101,7 +133,7 @@ export const categoryGroups = [
   {
     id: "puzzle-books",
     name: "Puzzle & Brain Books",
-    description: "Word search, sudoku, and multi-puzzle challenges!",
+    description: "Word search, crosswords, sudoku, and multi-puzzle challenges!",
   },
 ];
 

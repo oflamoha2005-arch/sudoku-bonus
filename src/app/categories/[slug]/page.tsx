@@ -102,7 +102,7 @@ export default async function CategoryPage({
                     background: `linear-gradient(135deg, ${category.gradientFrom}, ${category.gradientTo})`,
                   }}
                 >
-                  {category.books.length} Books Available
+                  {category.books.length} {category.books.length === 1 ? "Book" : "Books"} Available
                 </span>
                 <Link
                   href="/#categories"
