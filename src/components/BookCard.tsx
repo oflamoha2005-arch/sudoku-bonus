@@ -1,11 +1,13 @@
 "use client";
 
+import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import type { Book } from "@/data/books";
 import { ExternalLink } from "lucide-react";
 import { assetPath } from "@/utils/paths";
 import { useAmazonMarket } from "@/context/AmazonMarketContext";
+import { AmazonMarket, getBookDefaultMarket } from "@/utils/amazon";
 import MarketSelector from "./MarketSelector";
 
 interface BookCardProps {
@@ -15,8 +17,20 @@ interface BookCardProps {
 }
 
 export default function BookCard({ book, categoryColor, index }: BookCardProps) {
-  const { currentMarket, getBookUrl } = useAmazonMarket();
-  const localizedUrl = getBookUrl(book);
+  const { getBookUrl } = useAmazonMarket();
+
+  // Book default marketplace:
+  // English books default to US (amazon.com)
+  // German books default to DE (amazon.de)
+  const defaultMarket = useMemo(() => getBookDefaultMarket(book), [book]);
+  const [selectedMarket, setSelectedMarket] = useState<AmazonMarket>(defaultMarket);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    setSelectedMarket(defaultMarket);
+  }, [defaultMarket]);
+
+  const localizedUrl = getBookUrl(book, selectedMarket);
 
   const hasValidAmazonUrl =
     localizedUrl &&
@@ -29,11 +43,15 @@ export default function BookCard({ book, categoryColor, index }: BookCardProps) 
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="group h-full flex"
+      className={`group h-full flex relative ${isDropdownOpen ? "z-30" : "z-10"}`}
     >
-      <div className="relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-100 flex flex-col w-full">
+      <div
+        className={`relative bg-white rounded-3xl ${
+          isDropdownOpen ? "z-30 shadow-2xl" : "shadow-lg hover:shadow-2xl hover:-translate-y-2"
+        } transition-all duration-500 border border-gray-100 flex flex-col w-full`}
+      >
         {/* Cover Image Container */}
-        <div className="relative h-80 sm:h-96 overflow-hidden bg-gradient-to-b from-[#F9FAFB] via-[#F3F4F6] to-[#E5E7EB]/50 flex items-center justify-center p-4 sm:p-5">
+        <div className="relative h-80 sm:h-96 rounded-t-3xl overflow-hidden bg-gradient-to-b from-[#F9FAFB] via-[#F3F4F6] to-[#E5E7EB]/50 flex items-center justify-center p-4 sm:p-5">
           <div className="relative w-full h-full drop-shadow-xl transition-transform duration-500 group-hover:scale-105">
             <Image
               src={assetPath(book.cover)}
@@ -58,7 +76,7 @@ export default function BookCard({ book, categoryColor, index }: BookCardProps) 
         </div>
 
         {/* Content */}
-        <div className="p-5 sm:p-6 flex flex-col flex-grow justify-between bg-white">
+        <div className="p-5 sm:p-6 flex flex-col flex-grow justify-between bg-white rounded-b-3xl">
           <div>
             <h3
               className="text-lg sm:text-xl font-bold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors"
@@ -86,8 +104,8 @@ export default function BookCard({ book, categoryColor, index }: BookCardProps) 
                     background: `linear-gradient(135deg, ${categoryColor}, ${categoryColor}DD)`,
                   }}
                 >
-                  <span className="text-base leading-none">{currentMarket.flag}</span>
-                  <span>Buy on {currentMarket.domain}</span>
+                  <span className="text-base leading-none">{selectedMarket.flag}</span>
+                  <span>Buy on {selectedMarket.domain}</span>
                   <ExternalLink className="w-4 h-4 group-hover/btn:translate-x-0.5 transition-transform" />
                 </a>
 
@@ -96,10 +114,16 @@ export default function BookCard({ book, categoryColor, index }: BookCardProps) 
                   <span className="flex items-center gap-1.5 truncate">
                     <span>Store:</span>
                     <span className="font-semibold text-foreground/80 truncate">
-                      {currentMarket.name}
+                      {selectedMarket.name}
                     </span>
                   </span>
-                  <MarketSelector compact />
+                  <MarketSelector
+                    compact
+                    dropUp
+                    selectedMarket={selectedMarket}
+                    onSelectMarket={setSelectedMarket}
+                    onOpenChange={setIsDropdownOpen}
+                  />
                 </div>
               </div>
             ) : (

@@ -4,22 +4,43 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Globe, Check } from "lucide-react";
 import { useAmazonMarket } from "@/context/AmazonMarketContext";
+import { AmazonMarket } from "@/utils/amazon";
 
 interface MarketSelectorProps {
   compact?: boolean;
   className?: string;
+  dropUp?: boolean;
+  selectedMarket?: AmazonMarket;
+  onSelectMarket?: (market: AmazonMarket) => void;
+  onOpenChange?: (isOpen: boolean) => void;
 }
 
-export default function MarketSelector({ compact = false, className = "" }: MarketSelectorProps) {
-  const { currentMarket, setMarket, allMarkets, isAutoDetected } = useAmazonMarket();
+export default function MarketSelector({
+  compact = false,
+  className = "",
+  dropUp = false,
+  selectedMarket,
+  onSelectMarket,
+  onOpenChange,
+}: MarketSelectorProps) {
+  const { currentMarket: globalMarket, setMarket, allMarkets, isAutoDetected } = useAmazonMarket();
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const activeMarket = selectedMarket || globalMarket;
+
+  const handleToggle = () => {
+    const next = !isOpen;
+    setIsOpen(next);
+    onOpenChange?.(next);
+  };
 
   // Close dropdown on click outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setIsOpen(false);
+        onOpenChange?.(false);
       }
     }
     if (isOpen) {
@@ -28,34 +49,34 @@ export default function MarketSelector({ compact = false, className = "" }: Mark
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isOpen]);
+  }, [isOpen, onOpenChange]);
 
   return (
     <div ref={containerRef} className={`relative inline-block text-left ${className}`}>
       {/* Trigger Button */}
       <button
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleToggle}
         aria-label="Select Amazon Marketplace"
         aria-expanded={isOpen}
         className={`inline-flex items-center gap-1.5 rounded-full font-semibold transition-all ${
           compact
-            ? "px-2.5 py-1 text-xs bg-gray-100/90 hover:bg-gray-200/80 text-foreground/80 border border-gray-200/80"
-            : "px-3.5 py-1.5 text-xs sm:text-sm bg-white/80 hover:bg-white text-foreground/85 border border-accent-purple/15 shadow-sm hover:shadow"
+            ? "px-2.5 py-1 text-xs bg-gray-100/90 hover:bg-gray-200/80 text-foreground/80 border border-gray-200/80 active:scale-95 cursor-pointer"
+            : "px-3.5 py-1.5 text-xs sm:text-sm bg-white/80 hover:bg-white text-foreground/85 border border-accent-purple/15 shadow-sm hover:shadow cursor-pointer"
         }`}
       >
-        <span className="text-sm leading-none">{currentMarket.flag}</span>
+        <span className="text-sm leading-none">{activeMarket.flag}</span>
         <span className="font-bold tracking-tight">
-          {compact ? currentMarket.domain.replace("amazon.", "") : currentMarket.domain}
+          {compact ? activeMarket.domain.replace("amazon.", "") : activeMarket.domain}
         </span>
-        {isAutoDetected && !compact && (
+        {isAutoDetected && !compact && !selectedMarket && (
           <span className="hidden lg:inline-block text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.2 rounded-full bg-accent-green/20 text-accent-green">
             Auto
           </span>
         )}
         <ChevronDown
           className={`w-3.5 h-3.5 text-foreground/50 transition-transform duration-200 ${
-            isOpen ? "rotate-180" : ""
+            isOpen ? (dropUp ? "" : "rotate-180") : dropUp ? "rotate-180" : ""
           }`}
         />
       </button>
@@ -64,11 +85,16 @@ export default function MarketSelector({ compact = false, className = "" }: Mark
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 8, scale: 0.96 }}
+            initial={{ opacity: 0, y: dropUp ? 8 : -8, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 8, scale: 0.96 }}
+            exit={{ opacity: 0, y: dropUp ? 8 : -8, scale: 0.96 }}
             transition={{ duration: 0.15, ease: "easeOut" }}
-            className="absolute right-0 z-50 mt-2 w-64 max-h-80 overflow-y-auto rounded-2xl bg-white p-2 shadow-2xl border border-gray-100 divide-y divide-gray-50 focus:outline-none"
+            className={`absolute right-0 z-50 ${
+              dropUp ? "bottom-full mb-2 origin-bottom-right" : "top-full mt-2 origin-top-right"
+            } w-64 max-h-72 overflow-y-auto rounded-2xl bg-white p-2 border border-gray-200/90 divide-y divide-gray-100 focus:outline-none`}
+            style={{
+              boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.25), 0 0 15px rgba(0, 0, 0, 0.05)",
+            }}
           >
             <div className="px-3 py-2 text-[11px] font-bold text-foreground/50 uppercase tracking-wider flex items-center justify-between">
               <span className="flex items-center gap-1.5">
@@ -80,16 +106,21 @@ export default function MarketSelector({ compact = false, className = "" }: Mark
 
             <div className="py-1">
               {allMarkets.map((m) => {
-                const isSelected = m.code === currentMarket.code;
+                const isSelected = m.code === activeMarket.code;
                 return (
                   <button
                     key={m.code}
                     type="button"
                     onClick={() => {
-                      setMarket(m.code);
+                      if (onSelectMarket) {
+                        onSelectMarket(m);
+                      } else {
+                        setMarket(m.code);
+                      }
                       setIsOpen(false);
+                      onOpenChange?.(false);
                     }}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-left text-xs transition-colors ${
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-left text-xs transition-colors cursor-pointer ${
                       isSelected
                         ? "bg-primary/10 text-primary font-bold"
                         : "hover:bg-accent-yellow/15 text-foreground/80 hover:text-foreground"

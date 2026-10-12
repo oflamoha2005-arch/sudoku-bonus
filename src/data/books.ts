@@ -6,6 +6,8 @@ export interface Book {
   asin?: string;
   description: string;
   badge?: string;
+  language?: "en" | "de" | string;
+  defaultMarket?: string;
 }
 
 export interface Category {
@@ -40,6 +42,8 @@ export const categories: Category[] = [
         cover: "/covers/capybara-axolotl-coloring.jpg",
         asin: "B0HKFPLGF2",
         amazonUrl: "https://www.amazon.com/dp/B0HKFPLGF2",
+        language: "en",
+        defaultMarket: "US",
         badge: "Coloring Book",
         description:
           "A cozy and adorable space-themed coloring adventure featuring capybara and axolotl friends exploring the cosmos. Dream, explore, and color!",
@@ -64,6 +68,8 @@ export const categories: Category[] = [
         cover: "/covers/winter-word-search.jpg",
         asin: "B0HKGTQKZJ",
         amazonUrl: "https://www.amazon.com/dp/B0HKGTQKZJ",
+        language: "en",
+        defaultMarket: "US",
         badge: "Large Print",
         description:
           "Winter-themed large print word search puzzles for adults to relax, puzzle, unwind, and enjoy.",
@@ -74,6 +80,8 @@ export const categories: Category[] = [
         cover: "/covers/cat-breeds-word-search.jpg",
         asin: "B0HL4YGLGL",
         amazonUrl: "https://www.amazon.com/dp/B0HL4YGLGL",
+        language: "en",
+        defaultMarket: "US",
         badge: "Cat Edition",
         description:
           "An adorable cat breeds word search puzzle book packed with feline-themed puzzles for cat lovers of all ages.",
@@ -98,9 +106,23 @@ export const categories: Category[] = [
         cover: "/covers/winter-crossword.png",
         asin: "B0HLPSXHRW",
         amazonUrl: "https://www.amazon.com/dp/B0HLPSXHRW",
+        language: "en",
+        defaultMarket: "US",
         badge: "Large Print",
         description:
           "Winter-themed large print crossword puzzles for adults to relax, unwind, and keep the mind sharp.",
+      },
+      {
+        id: "esl-crossword-puzzles",
+        title: "ESL Crossword Puzzles",
+        cover: "/covers/esl-crossword-puzzles.jpg",
+        asin: "B0HLTQD2KC",
+        amazonUrl: "https://www.amazon.com/dp/B0HLTQD2KC",
+        language: "en",
+        defaultMarket: "US",
+        badge: "ESL Workbook",
+        description:
+          "A fun English vocabulary workbook with engaging crossword puzzles to read, think, solve, and grow your word skills.",
       },
     ],
   },
@@ -121,10 +143,24 @@ export const categories: Category[] = [
         title: "Halloween Rätselbuch Für Erwachsene",
         cover: "/covers/halloween-raetselbuch.jpg",
         asin: "B0HKJSLKTD",
-        amazonUrl: "https://www.amazon.com/dp/B0HKJSLKTD",
+        amazonUrl: "https://www.amazon.de/dp/B0HKJSLKTD",
+        language: "de",
+        defaultMarket: "DE",
         badge: "Sudoku & Puzzles",
         description:
           "Knifflige Rätsel für kluge Köpfe: Sudoku, Wortsuche und Labyrinthe im atmosphärischen Halloween-Design.",
+      },
+      {
+        id: "halloween-ausfuellraetsel-erwachsene",
+        title: "Halloween Ausfüllrätsel für Erwachsene",
+        cover: "/covers/halloween-ausfuellraetsel.jpg",
+        asin: "B0HKT1VCFM",
+        amazonUrl: "https://www.amazon.de/dp/B0HKT1VCFM",
+        language: "de",
+        defaultMarket: "DE",
+        badge: "Ausfüllrätsel",
+        description:
+          "Spannender Rätselspaß mit kniffligen Aufgaben für Erwachsene – perfekt für gemütliche und schaurig-schöne Halloween-Abende.",
       },
     ],
   },

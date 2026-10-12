@@ -246,3 +246,52 @@ export function localizeAmazonUrl(
   }
   return inputUrlOrAsin;
 }
+
+/**
+ * Resolves the default Amazon marketplace for a book based on language or settings:
+ * - English ("en") -> US (amazon.com)
+ * - German ("de") -> DE (amazon.de)
+ */
+export function getBookDefaultMarket(book?: {
+  language?: string;
+  defaultMarket?: string;
+  title?: string;
+  amazonUrl?: string;
+}): AmazonMarket {
+  if (!book) return DEFAULT_MARKET;
+
+  // 1. Explicit defaultMarket
+  if (book.defaultMarket) {
+    const market = AMAZON_MARKETS.find(
+      (m) => m.code === book.defaultMarket?.toUpperCase()
+    );
+    if (market) return market;
+  }
+
+  // 2. Language check (German -> DE, English -> US)
+  if (book.language) {
+    const lang = book.language.toLowerCase();
+    if (lang === "de" || lang.startsWith("de") || lang === "german" || lang === "germany") {
+      return AMAZON_MARKETS.find((m) => m.code === "DE") || DEFAULT_MARKET;
+    }
+    if (lang === "en" || lang.startsWith("en") || lang === "english") {
+      return AMAZON_MARKETS.find((m) => m.code === "US") || DEFAULT_MARKET;
+    }
+  }
+
+  // 3. Check amazonUrl domain
+  if (book.amazonUrl && /amazon\.de/i.test(book.amazonUrl)) {
+    return AMAZON_MARKETS.find((m) => m.code === "DE") || DEFAULT_MARKET;
+  }
+
+  // 4. Keyword heuristic in title
+  if (
+    book.title &&
+    /rätselbuch|raetselbuch|erwachsene|für|fuer|deutsch/i.test(book.title)
+  ) {
+    return AMAZON_MARKETS.find((m) => m.code === "DE") || DEFAULT_MARKET;
+  }
+
+  return DEFAULT_MARKET;
+}
+

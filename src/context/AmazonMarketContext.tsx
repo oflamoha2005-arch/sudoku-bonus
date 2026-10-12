@@ -10,12 +10,13 @@ import {
   detectBrowserFallbackMarket,
   buildAmazonUrl,
   localizeAmazonUrl,
+  getBookDefaultMarket,
 } from "@/utils/amazon";
 
 interface AmazonMarketContextValue {
   currentMarket: AmazonMarket;
   setMarket: (marketCode: string) => void;
-  getBookUrl: (book: Book) => string;
+  getBookUrl: (book: Book, marketOverride?: AmazonMarket) => string;
   allMarkets: AmazonMarket[];
   isAutoDetected: boolean;
   detectedCountryCode: string | null;
@@ -97,16 +98,20 @@ export function AmazonMarketProvider({ children }: { children: React.ReactNode }
   }, []);
 
   const getBookUrl = useCallback(
-    (book: Book) => {
+    (book: Book, marketOverride?: AmazonMarket) => {
+      const targetDomain = marketOverride
+        ? marketOverride.domain
+        : getBookDefaultMarket(book).domain;
+
       if (book.asin) {
-        return buildAmazonUrl(book.asin, currentMarket.domain);
+        return buildAmazonUrl(book.asin, targetDomain);
       }
       if (book.amazonUrl && book.amazonUrl !== "#") {
-        return localizeAmazonUrl(book.amazonUrl, currentMarket.domain);
+        return localizeAmazonUrl(book.amazonUrl, targetDomain);
       }
       return "#";
     },
-    [currentMarket.domain]
+    []
   );
 
   const value = useMemo(
