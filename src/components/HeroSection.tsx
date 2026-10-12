@@ -14,39 +14,39 @@ export default function HeroSection() {
       {/* Decorative pattern */}
       <div className="absolute inset-0 pattern-dots" />
 
-      {/* Floating Elements */}
+      {/* Floating Elements — hidden on mobile to reduce animation overhead */}
       <FloatingShape
-        className="top-24 left-[5%] w-16 h-16"
+        className="hidden sm:block top-24 left-[5%] w-16 h-16"
         color="#FFD93D"
         shape="star"
         delay={0}
       />
       <FloatingShape
-        className="top-32 right-[10%] w-12 h-12"
+        className="hidden sm:block top-32 right-[10%] w-12 h-12"
         color="#6EC6FF"
         shape="circle"
         delay={1}
       />
       <FloatingShape
-        className="bottom-32 left-[8%] w-14 h-14"
+        className="hidden sm:block bottom-32 left-[8%] w-14 h-14"
         color="#B388FF"
         shape="square"
         delay={2}
       />
       <FloatingShape
-        className="bottom-40 right-[5%] w-10 h-10"
+        className="hidden sm:block bottom-40 right-[5%] w-10 h-10"
         color="#4ECB71"
         shape="triangle"
         delay={0.5}
       />
       <FloatingShape
-        className="top-[50%] left-[15%] w-8 h-8"
+        className="hidden lg:block top-[50%] left-[15%] w-8 h-8"
         color="#FF6B6B"
         shape="circle"
         delay={1.5}
       />
       <FloatingShape
-        className="top-40 left-[40%] w-6 h-6"
+        className="hidden lg:block top-40 left-[40%] w-6 h-6"
         color="#FF9F43"
         shape="star"
         delay={3}
@@ -144,7 +144,7 @@ export default function HeroSection() {
                 muted
                 playsInline
                 controls={false}
-                preload="auto"
+                preload="metadata"
                 className="w-full h-full object-cover object-[82%_center] scale-[1.06] origin-[82%_center] select-none pointer-events-none"
               />
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import type { Book } from "@/data/books";
@@ -37,12 +37,33 @@ export default function BookCard({ book, categoryColor, index }: BookCardProps) 
     localizedUrl !== "#" &&
     localizedUrl.startsWith("http");
 
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  // Lightweight CSS-based scroll reveal (replaces framer-motion whileInView)
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    el.style.opacity = "0";
+    el.style.transform = "translateY(30px)";
+    el.style.transition = `opacity 0.5s ease ${index * 0.08}s, transform 0.5s ease ${index * 0.08}s`;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.style.opacity = "1";
+          el.style.transform = "none";
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+    <div
+      ref={cardRef}
       className={`group h-full flex relative ${isDropdownOpen ? "z-30" : "z-10"}`}
     >
       <div
@@ -143,6 +164,6 @@ export default function BookCard({ book, categoryColor, index }: BookCardProps) 
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

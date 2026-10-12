@@ -142,3 +142,38 @@ html {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* ============================================================
+   PERFORMANCE OPTIMIZATIONS
+   ============================================================ */
+
+/* Defer rendering of below-fold sections — massive LCP win on mobile */
+#about,
+#categories,
+#teaser {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 600px;
+}
+
+/* Limit layout/paint scope for card grids */
+.group {
+  contain: layout style;
+}
+
+/* GPU-accelerate the hero video wrapper */
+.hero-video-wrapper {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Respect user motion preferences — kill ALL animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
