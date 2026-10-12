@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import type { Book } from "@/data/books";
 import { ExternalLink } from "lucide-react";
 import { assetPath } from "@/utils/paths";
+import { useAmazonMarket } from "@/context/AmazonMarketContext";
+import MarketSelector from "./MarketSelector";
 
 interface BookCardProps {
   book: Book;
@@ -13,11 +15,13 @@ interface BookCardProps {
 }
 
 export default function BookCard({ book, categoryColor, index }: BookCardProps) {
+  const { currentMarket, getBookUrl } = useAmazonMarket();
+  const localizedUrl = getBookUrl(book);
+
   const hasValidAmazonUrl =
-    book.amazonUrl &&
-    book.amazonUrl !== "#" &&
-    book.amazonUrl.startsWith("http") &&
-    !book.amazonUrl.includes("PLACEHOLDER");
+    localizedUrl &&
+    localizedUrl !== "#" &&
+    localizedUrl.startsWith("http");
 
   return (
     <motion.div
@@ -69,34 +73,50 @@ export default function BookCard({ book, categoryColor, index }: BookCardProps) 
             )}
           </div>
 
-          {/* Buy Button or Link Coming Soon */}
-          {hasValidAmazonUrl ? (
-            <a
-              href={book.amazonUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 w-full justify-center px-5 py-3.5 rounded-2xl font-bold text-white text-sm shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all"
-              style={{
-                background: `linear-gradient(135deg, ${categoryColor}, ${categoryColor}DD)`,
-              }}
-            >
-              <span>Buy on Amazon</span>
-              <ExternalLink className="w-4 h-4" />
-            </a>
-          ) : (
-            <div className="inline-flex items-center justify-between px-4 py-3 rounded-2xl font-semibold text-sm border border-gray-200 bg-gray-50/80 text-foreground/75">
-              <span className="flex items-center gap-2">
-                <span
-                  className="w-2 h-2 rounded-full"
-                  style={{ backgroundColor: categoryColor }}
-                />
-                <span className="text-xs sm:text-sm">Available on Amazon</span>
-              </span>
-              <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-white text-foreground/50 border border-gray-200 font-medium">
-                Link Soon
-              </span>
-            </div>
-          )}
+          {/* Action section */}
+          <div>
+            {hasValidAmazonUrl ? (
+              <div className="space-y-2">
+                <a
+                  href={localizedUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 w-full justify-center px-5 py-3.5 rounded-2xl font-bold text-white text-sm shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all group/btn"
+                  style={{
+                    background: `linear-gradient(135deg, ${categoryColor}, ${categoryColor}DD)`,
+                  }}
+                >
+                  <span className="text-base leading-none">{currentMarket.flag}</span>
+                  <span>Buy on {currentMarket.domain}</span>
+                  <ExternalLink className="w-4 h-4 group-hover/btn:translate-x-0.5 transition-transform" />
+                </a>
+
+                {/* Market context hint & quick selector */}
+                <div className="flex items-center justify-between text-[11px] text-foreground/55 px-1 pt-1">
+                  <span className="flex items-center gap-1.5 truncate">
+                    <span>Store:</span>
+                    <span className="font-semibold text-foreground/80 truncate">
+                      {currentMarket.name}
+                    </span>
+                  </span>
+                  <MarketSelector compact />
+                </div>
+              </div>
+            ) : (
+              <div className="inline-flex items-center justify-between px-4 py-3 rounded-2xl font-semibold text-sm border border-gray-200 bg-gray-50/80 text-foreground/75 w-full">
+                <span className="flex items-center gap-2">
+                  <span
+                    className="w-2 h-2 rounded-full"
+                    style={{ backgroundColor: categoryColor }}
+                  />
+                  <span className="text-xs sm:text-sm">Available on Amazon</span>
+                </span>
+                <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-white text-foreground/50 border border-gray-200 font-medium">
+                  Link Soon
+                </span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </motion.div>

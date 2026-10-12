@@ -3,6 +3,7 @@ export interface Book {
   title: string;
   cover: string;
   amazonUrl: string;
+  asin?: string;
   description: string;
   badge?: string;
 }
@@ -37,7 +38,8 @@ export const categories: Category[] = [
         id: "cozy-capybara-axolotl-coloring",
         title: "Cozy Capybara and Axolotl Coloring Book",
         cover: "/covers/capybara-axolotl-coloring.jpg",
-        amazonUrl: "#",
+        asin: "B0HKFPLGF2",
+        amazonUrl: "https://www.amazon.com/dp/B0HKFPLGF2",
         badge: "Coloring Book",
         description:
           "A cozy and adorable space-themed coloring adventure featuring capybara and axolotl friends exploring the cosmos. Dream, explore, and color!",
@@ -60,7 +62,8 @@ export const categories: Category[] = [
         id: "winter-word-search-adults",
         title: "Winter Word Search Book for Adults",
         cover: "/covers/winter-word-search.jpg",
-        amazonUrl: "#",
+        asin: "B0HKGTQKZJ",
+        amazonUrl: "https://www.amazon.com/dp/B0HKGTQKZJ",
         badge: "Large Print",
         description:
           "Winter-themed large print word search puzzles for adults to relax, puzzle, unwind, and enjoy.",
@@ -69,7 +72,8 @@ export const categories: Category[] = [
         id: "cat-breeds-word-search",
         title: "Cat Breeds Word Search Puzzle Book",
         cover: "/covers/cat-breeds-word-search.jpg",
-        amazonUrl: "#",
+        asin: "B0HL4YGLGL",
+        amazonUrl: "https://www.amazon.com/dp/B0HL4YGLGL",
         badge: "Cat Edition",
         description:
           "An adorable cat breeds word search puzzle book packed with feline-themed puzzles for cat lovers of all ages.",
@@ -92,7 +96,8 @@ export const categories: Category[] = [
         id: "winter-crossword-adults",
         title: "Large Print Winter Crossword Books for Adults",
         cover: "/covers/winter-crossword.png",
-        amazonUrl: "#",
+        asin: "B0HLPSXHRW",
+        amazonUrl: "https://www.amazon.com/dp/B0HLPSXHRW",
         badge: "Large Print",
         description:
           "Winter-themed large print crossword puzzles for adults to relax, unwind, and keep the mind sharp.",
@@ -115,7 +120,8 @@ export const categories: Category[] = [
         id: "halloween-raetselbuch-erwachsene",
         title: "Halloween Rätselbuch Für Erwachsene",
         cover: "/covers/halloween-raetselbuch.jpg",
-        amazonUrl: "#",
+        asin: "B0HKJSLKTD",
+        amazonUrl: "https://www.amazon.com/dp/B0HKJSLKTD",
         badge: "Sudoku & Puzzles",
         description:
           "Knifflige Rätsel für kluge Köpfe: Sudoku, Wortsuche und Labyrinthe im atmosphärischen Halloween-Design.",

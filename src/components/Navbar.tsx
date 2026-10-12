@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, BookOpen, ChevronDown } from "lucide-react";
 import { categories, categoryGroups } from "@/data/books";
 import { socialLinks } from "@/data/social";
+import MarketSelector from "./MarketSelector";
 
 export default function Navbar() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -91,6 +92,9 @@ export default function Navbar() {
 
           {/* Right Side */}
           <div className="hidden md:flex items-center gap-3">
+            {/* Amazon Market Selector */}
+            <MarketSelector />
+
             {/* Social icons (small) */}
             <div className="flex items-center gap-1">
               <SocialIcon href={socialLinks.instagram} label="Instagram">
@@ -174,7 +178,12 @@ export default function Navbar() {
                 About Us
               </MobileLink>
 
-              <div className="pt-3 border-t border-accent-purple/10">
+              <div className="pt-3 px-2 flex items-center justify-between border-t border-accent-purple/10">
+                <span className="text-xs font-semibold text-foreground/60">Amazon Store:</span>
+                <MarketSelector />
+              </div>
+
+              <div className="pt-2">
                 <Link
                   href="/sign-in"
                   onClick={() => setIsMobileOpen(false)}

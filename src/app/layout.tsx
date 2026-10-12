@@ -3,6 +3,7 @@ import { Fredoka, Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { AmazonMarketProvider } from "@/context/AmazonMarketContext";
 
 const fredoka = Fredoka({
   variable: "--font-fredoka",
@@ -45,9 +46,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${fredoka.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <AmazonMarketProvider>
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </AmazonMarketProvider>
       </body>
     </html>
   );
