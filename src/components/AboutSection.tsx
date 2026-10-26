@@ -1,58 +1,74 @@
 "use client";
 
-import { BookOpen, Puzzle, Pencil, Sparkles } from "lucide-react";
+import Link from "next/link";
+import { BookOpen, Puzzle, Pencil, Sparkles, Send } from "lucide-react";
 import AnimatedSection from "./AnimatedSection";
+import { useAmazonMarket } from "@/context/AmazonMarketContext";
+import { translations } from "@/utils/translations";
 
 export default function AboutSection() {
+  const { language } = useAmazonMarket();
+  const t = translations[language];
+
   return (
     <section id="about" className="relative py-24 bg-white overflow-hidden">
       {/* Subtle background */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent-yellow/5 to-transparent" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimatedSection className="text-center mb-16">
+        <AnimatedSection className="text-center mb-14">
           <h2
             className="text-4xl sm:text-5xl font-bold mb-4"
             style={{ fontFamily: "var(--font-fredoka)" }}
           >
-            About{" "}
+            {t.aboutTitle}{" "}
             <span className="gradient-text">Oufella</span>
           </h2>
           <div className="w-24 h-1.5 bg-gradient-to-r from-accent-yellow to-primary rounded-full mx-auto mb-6" />
-          <p className="text-lg sm:text-xl text-foreground/60 max-w-3xl mx-auto leading-relaxed">
-            We&apos;re a passionate team of creators who believe every child deserves
-            to have fun while learning. Our activity books combine vibrant
-            illustrations with brain-boosting puzzles that keep kids engaged
-            for hours!
+
+          {/* Custom Book Demands Announcement */}
+          <p className="text-lg sm:text-xl text-foreground/75 max-w-3xl mx-auto leading-relaxed mb-6 font-medium">
+            {t.aboutSubtitle}
           </p>
+
+          <div className="flex justify-center">
+            <Link
+              href="/demand-us"
+              className="inline-flex items-center gap-2.5 px-7 py-3.5 bg-gradient-to-r from-primary via-[#FF8FAB] to-accent-purple text-white rounded-full font-bold text-sm sm:text-base shadow-xl shadow-pink-200/70 hover:shadow-2xl hover:scale-105 transition-all group"
+            >
+              <Send className="w-4 h-4" />
+              <span>{t.aboutCtaButton}</span>
+              <span className="group-hover:translate-x-1 transition-transform">→</span>
+            </Link>
+          </div>
         </AnimatedSection>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <FeatureCard
             icon={<Puzzle className="w-7 h-7" />}
-            title="Brain Boosting"
-            description="Every puzzle is designed to develop critical thinking, logic, and problem-solving skills."
+            title={t.featureBrainTitle}
+            description={t.featureBrainDesc}
             color="#6EC6FF"
             delay={0}
           />
           <FeatureCard
             icon={<BookOpen className="w-7 h-7" />}
-            title="Screen-Free Fun"
-            description="Real books for real fun! No batteries needed — just a pencil and a curious mind."
+            title={t.featureScreenTitle}
+            description={t.featureScreenDesc}
             color="#FF6B6B"
             delay={0.1}
           />
           <FeatureCard
             icon={<Pencil className="w-7 h-7" />}
-            title="Kid-Designed"
-            description="Every page is tested with real kids to make sure it's the perfect mix of fun and challenge."
+            title={t.featureKidTitle}
+            description={t.featureKidDesc}
             color="#FFD93D"
             delay={0.2}
           />
           <FeatureCard
             icon={<Sparkles className="w-7 h-7" />}
-            title="Colorful & Fun"
-            description="Bright, beautiful illustrations that make every page a joy to explore and complete."
+            title={t.featureDemandTitle}
+            description={t.featureDemandDesc}
             color="#B388FF"
             delay={0.3}
           />

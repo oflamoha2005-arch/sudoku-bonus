@@ -1,0 +1,1773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oufella Admin — Book Catalog Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #FF8FAB;
+      --primary-dark: #FF6B8B;
+      --purple: #8B5CF6;
+      --purple-dark: #7C3AED;
+      --yellow: #FFD166;
+      --green: #22C55E;
+      --blue: #0EA5E9;
+      --orange: #FF9F43;
+      --dark: #1E1B4B;
+      --text: #1E293B;
+      --text-muted: #64748B;
+      --bg: #F8FAFC;
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --border: rgba(139, 92, 246, 0.12);
+      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 10px 25px -5px rgba(139, 92, 246, 0.12);
+      --shadow-lg: 0 20px 35px -10px rgba(139, 92, 246, 0.18);
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #FFF5E6 0%, #FFEEF0 50%, #EDE7FF 100%);
+      min-height: 100vh;
+      color: var(--text);
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient background blobs */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+    .blob-1 { top: -100px; left: -100px; width: 400px; height: 400px; background: rgba(255, 143, 171, 0.35); }
+    .blob-2 { top: 30%; right: -150px; width: 450px; height: 450px; background: rgba(139, 92, 246, 0.25); }
+    .blob-3 { bottom: -100px; left: 30%; width: 500px; height: 500px; background: rgba(255, 209, 102, 0.3); }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(16px);
+      background: rgba(255, 255, 255, 0.85);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+    }
+    .header-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 22px;
+      box-shadow: 0 8px 16px rgba(255, 143, 171, 0.35);
+    }
+    .brand-text h1 {
+      font-family: 'Fredoka', cursive;
+      font-size: 24px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary-dark), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.1;
+    }
+    .brand-text span {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 14px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+    .btn-secondary {
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover {
+      background: #F1F5F9;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--purple));
+      color: white;
+      box-shadow: 0 6px 16px rgba(139, 92, 246, 0.25);
+    }
+    .btn-primary:hover {
+      box-shadow: 0 8px 22px rgba(139, 92, 246, 0.35);
+    }
+    .btn-publish {
+      background: linear-gradient(135deg, #10B981, #059669);
+      color: white;
+      box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
+      animation: pulse-glow 3s infinite;
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+      50% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+    }
+
+    /* Container */
+    .main-container {
+      max-width: 1400px;
+      margin: 28px auto;
+      padding: 0 24px 60px;
+    }
+
+    /* Stats bar */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: transform 0.2s;
+    }
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+    .stat-info .stat-value {
+      font-size: 26px;
+      font-weight: 700;
+      font-family: 'Fredoka', cursive;
+      line-height: 1.1;
+    }
+    .stat-info .stat-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Navigation Tabs */
+    .tabs-bar {
+      display: flex;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 6px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      margin-bottom: 24px;
+      width: fit-content;
+    }
+    .tab-btn {
+      padding: 10px 22px;
+      border-radius: 14px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: white;
+      color: var(--purple-dark);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Layout: Add Book Form + Preview */
+    .form-layout {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 28px;
+      align-items: start;
+    }
+    @media (max-width: 1080px) {
+      .form-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-md);
+    }
+    .card-title {
+      font-family: 'Fredoka', cursive;
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+    .form-label span.req {
+      color: #EF4444;
+    }
+    .form-input, .form-textarea, .form-select {
+      width: 100%;
+      padding: 12px 16px;
+      background: white;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 14px;
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.12);
+    }
+    .form-textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    /* Category pills picker */
+    .category-pills {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+    }
+    .cat-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: white;
+      border: 2px solid #E2E8F0;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .cat-pill .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .cat-pill.selected {
+      border-color: var(--purple);
+      background: #F5F3FF;
+      color: var(--purple-dark);
+    }
+
+    /* Image Upload Box */
+    .upload-zone {
+      border: 2px dashed #CBD5E1;
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      cursor: pointer;
+      background: #FAFAFA;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .upload-zone:hover, .upload-zone.dragover {
+      border-color: var(--purple);
+      background: #F5F3FF;
+    }
+    .upload-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    .upload-icon {
+      font-size: 36px;
+      margin-bottom: 8px;
+    }
+    .upload-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .upload-subtext {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Live Preview Card */
+    .preview-sticky {
+      position: sticky;
+      top: 100px;
+    }
+    .preview-book-card {
+      background: white;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0,0,0,0.06);
+      transition: transform 0.3s;
+    }
+    .preview-book-card:hover {
+      transform: translateY(-6px);
+    }
+    .preview-header-bar {
+      height: 6px;
+      width: 100%;
+      background: var(--primary);
+    }
+    .preview-cover-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1.15;
+      background: #F1F5F9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .preview-cover-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .preview-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--dark);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      letter-spacing: 0.5px;
+    }
+    .preview-body {
+      padding: 20px;
+    }
+    .preview-category-tag {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      color: var(--primary);
+    }
+    .preview-title {
+      font-family: 'Fredoka', cursive;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+    .preview-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .preview-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #FF9900, #E67A00);
+      color: white;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 13px;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(255, 153, 0, 0.3);
+    }
+
+    /* Books Catalog View */
+    .catalog-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .search-box {
+      position: relative;
+      flex: 1;
+      min-width: 260px;
+      max-width: 450px;
+    }
+    .search-input {
+      width: 100%;
+      padding: 12px 16px 12px 42px;
+      background: white;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 14px;
+      font-size: 14px;
+      outline: none;
+    }
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      color: var(--text-muted);
+    }
+    .filter-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .filter-pill {
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      background: white;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+    .filter-pill.active {
+      background: var(--dark);
+      color: white;
+      border-color: var(--dark);
+    }
+
+    /* Books Grid */
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .book-item-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.25s ease;
+    }
+    .book-item-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+    .book-thumb-wrap {
+      position: relative;
+      aspect-ratio: 1 / 1.15;
+      background: #F8FAFC;
+      overflow: hidden;
+    }
+    .book-thumb-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .book-item-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 4px 10px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+    .book-item-content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .book-cat-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .book-item-title {
+      font-family: 'Fredoka', cursive;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1.25;
+      margin-bottom: 6px;
+    }
+    .book-asin {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-family: monospace;
+      margin-bottom: 14px;
+    }
+    .book-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: auto;
+      border-top: 1px solid #F1F5F9;
+      padding-top: 12px;
+    }
+    .btn-action {
+      flex: 1;
+      padding: 8px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid #E2E8F0;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-edit:hover {
+      background: #F5F3FF;
+      color: var(--purple-dark);
+      border-color: var(--purple);
+    }
+    .btn-delete:hover {
+      background: #FEF2F2;
+      color: #DC2626;
+      border-color: #F87171;
+    }
+    .btn-amazon:hover {
+      background: #FFFBEB;
+      color: #D97706;
+      border-color: #FDE68A;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(6px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-box {
+      background: white;
+      border-radius: 24px;
+      max-width: 520px;
+      width: 100%;
+      padding: 32px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      transform: scale(0.95);
+      transition: transform 0.25s ease;
+    }
+    .modal-backdrop.open .modal-box {
+      transform: scale(1);
+    }
+    .modal-title {
+      font-family: 'Fredoka', cursive;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--dark);
+    }
+    .modal-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    /* Terminal console in deploy modal */
+    .terminal-box {
+      background: #0F172A;
+      color: #38BDF8;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 12px;
+      padding: 16px;
+      border-radius: 14px;
+      max-height: 200px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+      margin: 16px 0;
+    }
+
+    /* Lock Screen (Authentication) */
+    #lock-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #FFF5E6 0%, #FFEEF0 50%, #EDE7FF 100%);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .lock-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 40px;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(139, 92, 246, 0.15);
+    }
+    .lock-logo {
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 20px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, var(--primary), var(--purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 34px;
+      box-shadow: 0 10px 24px rgba(255, 143, 171, 0.4);
+    }
+    .lock-title {
+      font-family: 'Fredoka', cursive;
+      font-size: 30px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--dark);
+    }
+    .lock-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+
+    /* Toast Notification */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+    .toast {
+      pointer-events: auto;
+      background: #1E293B;
+      color: white;
+      padding: 14px 20px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .toast.success { border-left: 4px solid #10B981; }
+    .toast.error { border-left: 4px solid #EF4444; }
+
+    /* Shaking animation on wrong password */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+    .shake {
+      animation: shake 0.4s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Background Blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <!-- Lock Screen (Login) -->
+  <div id="lock-screen">
+    <div class="lock-card" id="lock-card-box">
+      <div class="lock-logo">📖</div>
+      <h2 class="lock-title">Oufella Admin</h2>
+      <p class="lock-desc">Dkhol l-interface bach tzid w t-gérer l-kotob dyalek</p>
+      
+      <form id="login-form">
+        <div class="form-group" style="text-align: left;">
+          <label class="form-label">Mot de Passe Admin</label>
+          <div style="position: relative;">
+            <input type="password" id="login-password" class="form-input" placeholder="Dkhel l-mot de passe..." autofocus required style="padding-right: 44px;">
+            <button type="button" id="btn-toggle-login-pass" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 16px; color: var(--text-muted); padding: 4px;">
+              👁️
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 14px; font-size: 15px;">
+          🔓 Dkhol l-Dashboard
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <a href="/" class="brand">
+        <div class="brand-icon">📚</div>
+        <div class="brand-text">
+          <h1>Oufella</h1>
+          <span>Admin Catalog Manager</span>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <a href="http://localhost:3000" target="_blank" class="btn btn-secondary" title="Chouf l-site f l-PC">
+          💻 Local Website
+        </a>
+        <a href="https://oflamoha2005-arch.github.io/sudoku-bonus/" target="_blank" class="btn btn-secondary" title="Chouf l-site live f internet">
+          🌐 Live Site
+        </a>
+        <button id="btn-open-publish" class="btn btn-publish">
+          🚀 Publish Live (GitHub)
+        </button>
+        <button id="btn-settings" class="btn btn-secondary" title="Beddel l-mot de passe">
+          ⚙️
+        </button>
+        <button id="btn-logout" class="btn btn-secondary" title="Kherrej">
+          🔒 Kherrej
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-container">
+
+    <!-- Stats Bar -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(139, 92, 246, 0.15); color: var(--purple-dark);">📚</div>
+        <div class="stat-info">
+          <div class="stat-value" id="stat-total-books">0</div>
+          <div class="stat-label">Total Kotob</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(255, 143, 171, 0.15); color: var(--primary-dark);">🎨</div>
+        <div class="stat-info">
+          <div class="stat-value" id="stat-coloring-books">0</div>
+          <div class="stat-label">Coloring Books</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(78, 203, 113, 0.15); color: #16A34A);">🔍</div>
+        <div class="stat-info">
+          <div class="stat-value" id="stat-word-search">0</div>
+          <div class="stat-label">Word Search</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(14, 165, 233, 0.15); color: #0284C7);">🧩</div>
+        <div class="stat-info">
+          <div class="stat-value" id="stat-puzzles">0</div>
+          <div class="stat-label">Crosswords &amp; Sudoku</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs-bar">
+      <button class="tab-btn active" data-tab="tab-add-book">
+        ➕ Zid Ktab Jdid
+      </button>
+      <button class="tab-btn" data-tab="tab-manage-books">
+        📖 Gérer L-Kotob Kamlin (<span id="tab-book-count">0</span>)
+      </button>
+    </div>
+
+    <!-- TAB 1: ADD / EDIT BOOK FORM WITH LIVE PREVIEW -->
+    <section id="tab-add-book" class="tab-content">
+      <div class="form-layout">
+        
+        <!-- Left: Form -->
+        <div class="card">
+          <h2 class="card-title" id="form-heading">
+            <span>✨</span> Ma3loumat dyal l-ktab
+          </h2>
+          <p class="card-subtitle" id="form-subheading">3emmer had l-formulaire bach tzid ktab jdid l-site dyalek</p>
+
+          <form id="book-form">
+            <input type="hidden" id="book-edit-id" value="">
+            <input type="hidden" id="book-original-category" value="">
+
+            <!-- Title -->
+            <div class="form-group">
+              <label class="form-label">3onwan dyal l-ktab (Book Title) <span class="req">*</span></label>
+              <input type="text" id="form-title" class="form-input" placeholder="Mithal: Cozy Axolotl & Capybara Coloring Book" required>
+            </div>
+
+            <!-- Category -->
+            <div class="form-group">
+              <label class="form-label">Category <span class="req">*</span></label>
+              <div class="category-pills" id="category-pills-list">
+                <!-- Injected via JS -->
+              </div>
+              <input type="hidden" id="form-category" value="coloring-books" required>
+            </div>
+
+            <!-- Cover Image Uploader -->
+            <div class="form-group">
+              <label class="form-label">L-Cover dyal l-ktab (Upload Cover Image) <span class="req">*</span></label>
+              <div class="upload-zone" id="upload-zone">
+                <input type="file" id="form-file-input" accept="image/png, image/jpeg, image/jpg, image/webp">
+                <div class="upload-icon">🖼️</div>
+                <div class="upload-text" id="upload-label">Khtari tsswira dyal l-cover mn l-PC awla driri Drag &amp; Drop</div>
+                <div class="upload-subtext">JPG, PNG, WEBP (Kay-tsauvegarda direct f public/covers)</div>
+              </div>
+              <input type="hidden" id="form-cover-base64" value="">
+              <input type="hidden" id="form-cover-url" value="">
+            </div>
+
+            <!-- ASIN & Amazon Link -->
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Amazon ASIN</label>
+                <input type="text" id="form-asin" class="form-input" placeholder="Mithal: B0HKFPLGF2" maxlength="10">
+                <p style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Code ASIN dyal ktab f Amazon (10 7orouf)</p>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Default Market</label>
+                <select id="form-market" class="form-select">
+                  <option value="US">Amazon US (.com)</option>
+                  <option value="DE">Amazon Germany (.de)</option>
+                  <option value="UK">Amazon UK (.co.uk)</option>
+                  <option value="FR">Amazon France (.fr)</option>
+                  <option value="ES">Amazon Spain (.es)</option>
+                  <option value="IT">Amazon Italy (.it)</option>
+                  <option value="CA">Amazon Canada (.ca)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Amazon Full URL (Optional ila 3ndek ASIN)</label>
+              <input type="url" id="form-amazon-url" class="form-input" placeholder="https://www.amazon.com/dp/B0HKFPLGF2">
+              <p style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Ila coliti l-link hna, ghadi n-jebdo l-ASIN b-tariqa automatique!</p>
+            </div>
+
+            <!-- Badge & Language -->
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Badge (Pill f-jenb l-cover)</label>
+                <input type="text" id="form-badge" class="form-input" placeholder="Mithal: Large Print / New / Coloring Book">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Lougha dyal l-ktab</label>
+                <select id="form-language" class="form-select">
+                  <option value="en">English (en)</option>
+                  <option value="de">Deutsch (de)</option>
+                  <option value="fr">Français (fr)</option>
+                  <option value="es">Español (es)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+              <label class="form-label">Wasf 9sir (Short Description)</label>
+              <textarea id="form-description" class="form-textarea" placeholder="Kteb wasf 9sir 3la l-ktab..."></textarea>
+            </div>
+
+            <!-- Buttons -->
+            <div style="display: flex; gap: 12px; margin-top: 24px;">
+              <button type="submit" class="btn btn-primary" id="btn-save-book" style="flex: 2; justify-content: center; padding: 14px;">
+                💾 Sauvegarder L-Ktab
+              </button>
+              <button type="button" class="btn btn-secondary" id="btn-reset-form" style="flex: 1; justify-content: center;">
+                Annuller / Jdid
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Right: Live Interactive Card Preview -->
+        <div class="preview-sticky">
+          <div class="card" style="padding: 22px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+              <h3 style="font-family: 'Fredoka', cursive; font-size: 18px; color: var(--dark);">
+                👀 Live Card Preview
+              </h3>
+              <span style="font-size: 11px; background: #ECFDF5; color: #059669; padding: 4px 10px; border-radius: 20px; font-weight: 700;">
+                Kima ghayban f-site
+              </span>
+            </div>
+
+            <div class="preview-book-card">
+              <div class="preview-header-bar" id="preview-bar"></div>
+              
+              <div class="preview-cover-container">
+                <img id="preview-img" src="/covers/winter-word-search.jpg" alt="Preview Cover" class="preview-cover-img">
+                <div class="preview-badge" id="preview-badge-pill">Coloring Book</div>
+              </div>
+
+              <div class="preview-body">
+                <div class="preview-category-tag" id="preview-cat-text">COLORING BOOKS</div>
+                <h4 class="preview-title" id="preview-title-text">Cozy Capybara and Axolotl Coloring Book</h4>
+                <p class="preview-desc" id="preview-desc-text">
+                  A cozy and adorable coloring adventure featuring capybara and axolotl friends exploring the cosmos.
+                </p>
+                <div class="preview-btn">
+                  🛒 Buy on Amazon
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 2: MANAGE ALL BOOKS (CATALOG) -->
+    <section id="tab-manage-books" class="tab-content" style="display: none;">
+      <div class="catalog-controls">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="catalog-search" class="search-input" placeholder="9elleb b l-3onwan awla ASIN...">
+        </div>
+
+        <div class="filter-pills" id="category-filters">
+          <button class="filter-pill active" data-filter="all">Kolchi</button>
+        </div>
+      </div>
+
+      <div class="books-grid" id="books-grid-container">
+        <!-- Injected via JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: One-Click Publish to GitHub -->
+  <div class="modal-backdrop" id="modal-publish">
+    <div class="modal-box">
+      <h3 class="modal-title">🚀 Publish Live l GitHub</h3>
+      <p class="modal-desc">
+        Had l-bouton ghadi y-commitayi w y-pushi ga3 l-kotob jdad w tssawer l-GitHub. GitHub Pages ghadi y-loanci build automatique w y-bano f l-site l-live!
+      </p>
+
+      <div class="terminal-box" id="publish-log">Status: Wajed bach y-pushi...</div>
+
+      <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
+        <button class="btn btn-secondary" id="btn-close-publish">Chd</button>
+        <button class="btn btn-publish" id="btn-confirm-publish">
+          🚀 Yallah Pushé Deba!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Settings (Change Password) -->
+  <div class="modal-backdrop" id="modal-settings">
+    <div class="modal-box">
+      <h3 class="modal-title">⚙️ Beddel Mot de Passe</h3>
+      <p class="modal-desc">T9der tbeddel l-mot de passe bach t-securiser l-accès l had l-interface.</p>
+
+      <form id="settings-form">
+        <div class="form-group">
+          <label class="form-label">Mot de passe l-7ali (Current)</label>
+          <input type="password" id="settings-curr-pass" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mot de passe jdid (New)</label>
+          <input type="password" id="settings-new-pass" class="form-input" minlength="4" required>
+        </div>
+        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
+          <button type="button" class="btn btn-secondary" id="btn-close-settings">Annuller</button>
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Delete Confirmation -->
+  <div class="modal-backdrop" id="modal-delete">
+    <div class="modal-box">
+      <h3 class="modal-title" style="color: #DC2626;">🗑️ Mse7 Had L-Ktab?</h3>
+      <p class="modal-desc" id="delete-book-msg">Wach bss7 bghiti t-mse7 had l-ktab?</p>
+
+      <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
+        <button class="btn btn-secondary" id="btn-cancel-delete">La, Khllih</button>
+        <button class="btn" id="btn-confirm-delete" style="background: #DC2626; color: white;">
+          Iyyeh, Mse7
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script>
+    // Security helpers: never inject raw data into innerHTML
+    function esc(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+    function safeColor(value, fallback = '#FF8FAB') {
+      return /^#[0-9a-fA-F]{3,8}$/.test(value || '') ? value : fallback;
+    }
+    function safeHttpsUrl(value) {
+      return /^https:\/\//i.test(value || '') ? value : '#';
+    }
+
+    // State (token lives only for this browser tab)
+    let authToken = sessionStorage.getItem('oufella_admin_token') || '';
+    localStorage.removeItem('oufella_admin_token'); // clean up old persistent token
+    let catalogData = { categories: [], categoryGroups: [] };
+    let activeFilter = 'all';
+    let deleteTarget = { id: '', categoryId: '' };
+
+    // Elements
+    const lockScreen = document.getElementById('lock-screen');
+    const lockCardBox = document.getElementById('lock-card-box');
+    const loginForm = document.getElementById('login-form');
+    const loginPassInput = document.getElementById('login-password');
+    const btnToggleLoginPass = document.getElementById('btn-toggle-login-pass');
+
+    if (btnToggleLoginPass) {
+      btnToggleLoginPass.addEventListener('click', () => {
+        const isPass = loginPassInput.type === 'password';
+        loginPassInput.type = isPass ? 'text' : 'password';
+        btnToggleLoginPass.textContent = isPass ? '🙈' : '👁️';
+      });
+    }
+
+    // UI Helpers: Toast
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      const icon = document.createElement('span');
+      icon.textContent = type === 'success' ? '✅' : '⚠️';
+      const text = document.createElement('span');
+      text.textContent = message;
+      toast.append(icon, document.createTextNode(' '), text);
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Auth Check
+    async function checkAuth() {
+      if (!authToken) {
+        lockScreen.style.display = 'flex';
+        return;
+      }
+      try {
+        const res = await fetch('/api/books', {
+          headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        if (res.ok) {
+          lockScreen.style.display = 'none';
+          loadCatalog();
+        } else {
+          authToken = '';
+          sessionStorage.removeItem('oufella_admin_token');
+          lockScreen.style.display = 'flex';
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    // Login Form Submit
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const password = loginPassInput.value;
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password })
+        });
+        const data = await res.json();
+        if (data.success) {
+          authToken = data.token;
+          sessionStorage.setItem('oufella_admin_token', authToken);
+          lockScreen.style.display = 'none';
+          showToast('Mer7ba bik! T-7ell l-Admin Portal.');
+          loadCatalog();
+          if (data.mustChangePassword) {
+            document.getElementById('modal-settings').classList.add('open');
+            showToast('Beddel l-mot de passe d-default daba (Settings)!', 'error');
+          }
+        } else {
+          lockCardBox.classList.add('shake');
+          setTimeout(() => lockCardBox.classList.remove('shake'), 450);
+          showToast(data.error || 'Mot de passe ghalat!', 'error');
+        }
+      } catch (err) {
+        showToast('Server ma khddamsh!', 'error');
+      }
+    });
+
+    // Logout
+    document.getElementById('btn-logout').addEventListener('click', () => {
+      fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${authToken}` }
+      }).catch(() => {});
+      authToken = '';
+      sessionStorage.removeItem('oufella_admin_token');
+      lockScreen.style.display = 'flex';
+      loginPassInput.value = '';
+    });
+
+    // Load Catalog Data
+    async function loadCatalog() {
+      try {
+        const res = await fetch('/api/books', {
+          headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        if (!res.ok) return;
+        catalogData = await res.json();
+        renderStats();
+        renderCategoryPills();
+        renderFilterPills();
+        renderCatalog();
+        updatePreview();
+      } catch (e) {
+        console.error('Error loading catalog:', e);
+      }
+    }
+
+    // Render Stats
+    function renderStats() {
+      let total = 0;
+      let coloring = 0;
+      let wordSearch = 0;
+      let puzzles = 0;
+
+      (catalogData.categories || []).forEach(cat => {
+        const count = (cat.books || []).length;
+        total += count;
+        if (cat.id === 'coloring-books') coloring += count;
+        else if (cat.id === 'word-search') wordSearch += count;
+        else puzzles += count;
+      });
+
+      document.getElementById('stat-total-books').textContent = total;
+      document.getElementById('stat-coloring-books').textContent = coloring;
+      document.getElementById('stat-word-search').textContent = wordSearch;
+      document.getElementById('stat-puzzles').textContent = puzzles;
+      document.getElementById('tab-book-count').textContent = total;
+    }
+
+    // Render Category Pills in Form
+    function renderCategoryPills() {
+      const container = document.getElementById('category-pills-list');
+      container.innerHTML = '';
+      const selectedCatId = document.getElementById('form-category').value;
+
+      (catalogData.categories || []).forEach(cat => {
+        const pill = document.createElement('div');
+        pill.className = `cat-pill ${cat.id === selectedCatId ? 'selected' : ''}`;
+        pill.innerHTML = `
+          <span class="dot" style="background-color: ${safeColor(cat.color)};"></span>
+          <span>${esc(cat.name)}</span>
+        `;
+        pill.addEventListener('click', () => {
+          document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('selected'));
+          pill.classList.add('selected');
+          document.getElementById('form-category').value = cat.id;
+          updatePreview();
+        });
+        container.appendChild(pill);
+      });
+    }
+
+    // Render Category Filter Pills in Catalog View
+    function renderFilterPills() {
+      const container = document.getElementById('category-filters');
+      container.innerHTML = `
+        <button class="filter-pill ${activeFilter === 'all' ? 'active' : ''}" data-filter="all">Kolchi</button>
+      `;
+      (catalogData.categories || []).forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = `filter-pill ${activeFilter === cat.id ? 'active' : ''}`;
+        btn.setAttribute('data-filter', cat.id);
+        btn.textContent = cat.name;
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeFilter = cat.id;
+          renderCatalog();
+        });
+        container.appendChild(btn);
+      });
+
+      container.querySelector('[data-filter="all"]').addEventListener('click', (e) => {
+        document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        activeFilter = 'all';
+        renderCatalog();
+      });
+    }
+
+    // Render Catalog Books Grid
+    function renderCatalog() {
+      const container = document.getElementById('books-grid-container');
+      const searchQuery = (document.getElementById('catalog-search').value || '').toLowerCase().trim();
+      container.innerHTML = '';
+
+      let allBooks = [];
+      (catalogData.categories || []).forEach(cat => {
+        if (activeFilter === 'all' || activeFilter === cat.id) {
+          (cat.books || []).forEach(book => {
+            allBooks.push({ book, category: cat });
+          });
+        }
+      });
+
+      // Filter by search
+      if (searchQuery) {
+        allBooks = allBooks.filter(({ book }) =>
+          (book.title || '').toLowerCase().includes(searchQuery) ||
+          (book.asin || '').toLowerCase().includes(searchQuery)
+        );
+      }
+
+      if (allBooks.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: white; border-radius: 20px; border: 1px dashed var(--border);">
+            <div style="font-size: 40px; margin-bottom: 12px;">🔍</div>
+            <h3 style="font-family: 'Fredoka', cursive; font-size: 20px; color: var(--dark);">Hatta ktab ma kayn hna</h3>
+            <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;">Khellas search awla zid ktab jdid mn l-onglet 'Zid Ktab Jdid'.</p>
+          </div>
+        `;
+        return;
+      }
+
+      allBooks.forEach(({ book, category }) => {
+        const card = document.createElement('div');
+        card.className = 'book-item-card';
+        card.innerHTML = `
+          <div class="book-thumb-wrap">
+            <img src="${esc(book.cover)}" alt="${esc(book.title)}" class="book-thumb-img" onerror="this.src='/covers/winter-word-search.jpg'">
+            ${book.badge ? `<div class="book-item-badge">${esc(book.badge)}</div>` : ''}
+          </div>
+          <div class="book-item-content">
+            <div class="book-cat-label" style="color: ${safeColor(category.color)};">${esc(category.name)}</div>
+            <h4 class="book-item-title">${esc(book.title)}</h4>
+            <div class="book-asin">${book.asin ? 'ASIN: ' + esc(book.asin) : ''} • Lang: ${esc((book.language || 'en').toUpperCase())}</div>
+            <div class="book-actions">
+              <button class="btn-action btn-edit" data-id="${esc(book.id)}" data-cat="${esc(category.id)}">
+                ✏️ Edit
+              </button>
+              <button class="btn-action btn-delete" data-id="${esc(book.id)}" data-cat="${esc(category.id)}" data-title="${esc(book.title)}">
+                🗑️ Mse7
+              </button>
+              <a href="${esc(safeHttpsUrl(book.amazonUrl))}" target="_blank" rel="noopener noreferrer" class="btn-action btn-amazon" title="Chouf f Amazon">
+                🛒 Amazon
+              </a>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      // Bind Edit & Delete buttons
+      container.querySelectorAll('.btn-edit').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-id');
+          const catId = btn.getAttribute('data-cat');
+          startEditBook(id, catId);
+        });
+      });
+
+      container.querySelectorAll('.btn-delete').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-id');
+          const catId = btn.getAttribute('data-cat');
+          const title = btn.getAttribute('data-title');
+          promptDeleteBook(id, catId, title);
+        });
+      });
+    }
+
+    // Search filter input
+    document.getElementById('catalog-search').addEventListener('input', renderCatalog);
+
+    // Tab Switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const target = btn.getAttribute('data-tab');
+        document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+        document.getElementById(target).style.display = 'block';
+        if (target === 'tab-manage-books') renderCatalog();
+      });
+    });
+
+    // Live Preview Binding
+    const titleInput = document.getElementById('form-title');
+    const badgeInput = document.getElementById('form-badge');
+    const descInput = document.getElementById('form-description');
+    const amazonUrlInput = document.getElementById('form-amazon-url');
+    const asinInput = document.getElementById('form-asin');
+    const fileInput = document.getElementById('form-file-input');
+    const uploadZone = document.getElementById('upload-zone');
+
+    function updatePreview() {
+      const title = titleInput.value.trim() || 'Book Title Preview';
+      const badge = badgeInput.value.trim() || 'New Edition';
+      const desc = descInput.value.trim() || 'A delightful activity book filled with relaxing puzzles, cozy themes, and creative fun.';
+      const catId = document.getElementById('form-category').value;
+      const currentCat = (catalogData.categories || []).find(c => c.id === catId);
+
+      document.getElementById('preview-title-text').textContent = title;
+      document.getElementById('preview-badge-pill').textContent = badge;
+      document.getElementById('preview-desc-text').textContent = desc;
+
+      if (currentCat) {
+        document.getElementById('preview-cat-text').textContent = currentCat.name.toUpperCase();
+        document.getElementById('preview-cat-text').style.color = currentCat.color || '#FF8FAB';
+        document.getElementById('preview-bar').style.background = currentCat.color || '#FF8FAB';
+      }
+
+      const coverBase64 = document.getElementById('form-cover-base64').value;
+      const coverUrl = document.getElementById('form-cover-url').value;
+      if (coverBase64) {
+        document.getElementById('preview-img').src = coverBase64;
+      } else if (coverUrl) {
+        document.getElementById('preview-img').src = coverUrl;
+      }
+    }
+
+    titleInput.addEventListener('input', updatePreview);
+    badgeInput.addEventListener('input', updatePreview);
+    descInput.addEventListener('input', updatePreview);
+
+    // Auto extract ASIN when pasting Amazon URL
+    amazonUrlInput.addEventListener('input', () => {
+      const val = amazonUrlInput.value;
+      const match = val.match(/(?:dp|gp\/product|asin)\/([A-Z0-9]{10})/i);
+      if (match && !asinInput.value) {
+        asinInput.value = match[1].toUpperCase();
+      }
+      updatePreview();
+    });
+
+    // Drag & Drop Image Handling
+    ['dragenter', 'dragover'].forEach(eventName => {
+      uploadZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        uploadZone.classList.add('dragover');
+      });
+    });
+    ['dragleave', 'drop'].forEach(eventName => {
+      uploadZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        uploadZone.classList.remove('dragover');
+      });
+    });
+
+    uploadZone.addEventListener('drop', (e) => {
+      const files = e.dataTransfer.files;
+      if (files && files[0]) handleImageFile(files[0]);
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) handleImageFile(e.target.files[0]);
+    });
+
+    function handleImageFile(file) {
+      if (!file.type.startsWith('image/')) {
+        showToast('Khtari fichier d tsswira (JPG, PNG, WEBP)!', 'error');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        document.getElementById('form-cover-base64').value = event.target.result;
+        document.getElementById('upload-label').innerHTML = `✅ <strong>${esc(file.name)}</strong> (${(file.size / 1024).toFixed(1)} KB)`;
+        updatePreview();
+        showToast(`Tsswira '${file.name}' t-khtarat!`);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Save Book (Add or Edit)
+    document.getElementById('book-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const saveBtn = document.getElementById('btn-save-book');
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = '⏳ Kay-sauvegarder...';
+
+      const editId = document.getElementById('book-edit-id').value;
+      const originalCat = document.getElementById('book-original-category').value;
+      const title = titleInput.value.trim();
+      const categoryId = document.getElementById('form-category').value;
+      const asin = asinInput.value.trim();
+      const amazonUrl = amazonUrlInput.value.trim();
+      const badge = badgeInput.value.trim();
+      const language = document.getElementById('form-language').value;
+      const defaultMarket = document.getElementById('form-market').value;
+      const description = descInput.value.trim();
+      const coverImageBase64 = document.getElementById('form-cover-base64').value;
+      const coverUrl = document.getElementById('form-cover-url').value;
+
+      const payload = {
+        id: editId || undefined,
+        originalCategoryId: originalCat || undefined,
+        title,
+        categoryId,
+        asin,
+        amazonUrl,
+        badge,
+        language,
+        defaultMarket,
+        description,
+        coverImageBase64: coverImageBase64 || undefined,
+        coverUrl: coverUrl || undefined
+      };
+
+      const endpoint = editId ? '/api/books/update' : '/api/books/add';
+
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          showToast(editId ? 'L-ktab t-beddel b-naja7! 🎉' : 'L-ktab t-zad b-naja7! 🎉');
+          resetForm();
+          loadCatalog();
+          // Switch to manage tab
+          document.querySelector('[data-tab="tab-manage-books"]').click();
+        } else {
+          showToast(data.error || 'Erreur f sauvegarde', 'error');
+        }
+      } catch (err) {
+        showToast('Erreur d connexion!', 'error');
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = '💾 Sauvegarder L-Ktab';
+      }
+    });
+
+    // Reset Form
+    function resetForm() {
+      document.getElementById('book-edit-id').value = '';
+      document.getElementById('book-original-category').value = '';
+      document.getElementById('form-heading').innerHTML = '<span>✨</span> Ma3loumat dyal l-ktab';
+      document.getElementById('form-subheading').textContent = '3emmer had l-formulaire bach tzid ktab jdid l-site dyalek';
+      document.getElementById('btn-save-book').textContent = '💾 Sauvegarder L-Ktab';
+
+      titleInput.value = '';
+      asinInput.value = '';
+      amazonUrlInput.value = '';
+      badgeInput.value = '';
+      descInput.value = '';
+      document.getElementById('form-cover-base64').value = '';
+      document.getElementById('form-cover-url').value = '';
+      document.getElementById('upload-label').textContent = 'Khtari tsswira dyal l-cover mn l-PC awla driri Drag & Drop';
+      fileInput.value = '';
+      updatePreview();
+    }
+    document.getElementById('btn-reset-form').addEventListener('click', resetForm);
+
+    // Edit Book
+    function startEditBook(id, categoryId) {
+      let targetBook = null;
+      let targetCat = null;
+
+      for (const cat of catalogData.categories || []) {
+        const b = (cat.books || []).find(x => x.id === id);
+        if (b) {
+          targetBook = b;
+          targetCat = cat;
+          break;
+        }
+      }
+
+      if (!targetBook) return;
+
+      // Fill form
+      document.getElementById('book-edit-id').value = targetBook.id;
+      document.getElementById('book-original-category').value = targetCat.id;
+      document.getElementById('form-heading').innerHTML = `<span>✏️</span> T-beddel: ${esc(targetBook.title)}`;
+      document.getElementById('form-subheading').textContent = `ID: ${targetBook.id}`;
+      document.getElementById('btn-save-book').textContent = '💾 Enregistrer L-Modifications';
+
+      titleInput.value = targetBook.title || '';
+      asinInput.value = targetBook.asin || '';
+      amazonUrlInput.value = targetBook.amazonUrl || '';
+      badgeInput.value = targetBook.badge || '';
+      descInput.value = targetBook.description || '';
+      document.getElementById('form-language').value = targetBook.language || 'en';
+      document.getElementById('form-market').value = targetBook.defaultMarket || 'US';
+      document.getElementById('form-category').value = targetCat.id;
+      document.getElementById('form-cover-url').value = targetBook.cover || '';
+      document.getElementById('form-cover-base64').value = '';
+      document.getElementById('upload-label').innerHTML = `L-cover l-7ali: <strong>${esc(targetBook.cover)}</strong> (Khtari wahda jdida ila bghiti tbeddlo)`;
+
+      renderCategoryPills();
+      updatePreview();
+
+      // Switch to add tab
+      document.querySelector('[data-tab="tab-add-book"]').click();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Delete Book Modal
+    function promptDeleteBook(id, categoryId, title) {
+      deleteTarget = { id, categoryId };
+      document.getElementById('delete-book-msg').textContent = `Wach bss7 bghiti t-mse7 ktab: "${title}"?`;
+      document.getElementById('modal-delete').classList.add('open');
+    }
+
+    document.getElementById('btn-cancel-delete').addEventListener('click', () => {
+      document.getElementById('modal-delete').classList.remove('open');
+    });
+
+    document.getElementById('btn-confirm-delete').addEventListener('click', async () => {
+      try {
+        const res = await fetch('/api/books/delete', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`
+          },
+          body: JSON.stringify(deleteTarget)
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('L-ktab t-mse7 b-naja7.');
+          document.getElementById('modal-delete').classList.remove('open');
+          loadCatalog();
+        } else {
+          showToast(data.error || 'Erreur f l-mse7', 'error');
+        }
+      } catch (err) {
+        showToast('Erreur d connexion!', 'error');
+      }
+    });
+
+    // Publish to GitHub Modal
+    const modalPublish = document.getElementById('modal-publish');
+    const publishLog = document.getElementById('publish-log');
+    const btnOpenPublish = document.getElementById('btn-open-publish');
+    const btnClosePublish = document.getElementById('btn-close-publish');
+    const btnConfirmPublish = document.getElementById('btn-confirm-publish');
+
+    btnOpenPublish.addEventListener('click', () => {
+      modalPublish.classList.add('open');
+      publishLog.textContent = 'Ready! Cliki 3la "Yallah Pushé Deba" bach t-loanci l-push l GitHub.';
+    });
+
+    btnClosePublish.addEventListener('click', () => {
+      modalPublish.classList.remove('open');
+    });
+
+    btnConfirmPublish.addEventListener('click', async () => {
+      btnConfirmPublish.disabled = true;
+      btnConfirmPublish.innerHTML = '⏳ Kay-pushi l GitHub...';
+      publishLog.textContent = '1. Git Add...\n2. Git Commit...\n3. Git Push origin main...\n\nTsna wa7d l-l7da...';
+
+      try {
+        const res = await fetch('/api/git/publish', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        const data = await res.json();
+        if (data.success) {
+          publishLog.textContent = `✅ SUCCESS!\n\n${data.message || data.output || 'Pushé l GitHub b-naja7!'}\n\nGitHub Pages workflow kay-deployi l-site deba. Ghadi yban f l-site l-live f ~1 dqi9a:\nhttps://oflamoha2005-arch.github.io/sudoku-bonus/`;
+          showToast('Pushé l GitHub b-naja7! 🚀');
+        } else {
+          publishLog.textContent = `❌ ERROR:\n\n${data.error || 'Erreur f git push'}\n\nLog:\n${data.output || ''}`;
+          showToast('Erreur f Git Push!', 'error');
+        }
+      } catch (err) {
+        publishLog.textContent = '❌ Erreur de réseau awla server ma m-connectich.';
+        showToast('Erreur de réseau', 'error');
+      } finally {
+        btnConfirmPublish.disabled = false;
+        btnConfirmPublish.innerHTML = '🚀 Yallah Pushé Deba!';
+      }
+    });
+
+    // Settings (Change Password) Modal
+    const modalSettings = document.getElementById('modal-settings');
+    document.getElementById('btn-settings').addEventListener('click', () => {
+      modalSettings.classList.add('open');
+    });
+    document.getElementById('btn-close-settings').addEventListener('click', () => {
+      modalSettings.classList.remove('open');
+    });
+    document.getElementById('settings-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const curr = document.getElementById('settings-curr-pass').value;
+      const next = document.getElementById('settings-new-pass').value;
+      try {
+        const res = await fetch('/api/auth/change-password', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`
+          },
+          body: JSON.stringify({ currentPassword: curr, newPassword: next })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('L-mot de passe t-beddel b-naja7! 🎉');
+          modalSettings.classList.remove('open');
+          document.getElementById('settings-curr-pass').value = '';
+          document.getElementById('settings-new-pass').value = '';
+        } else {
+          showToast(data.error || 'Erreur f tbdel d mot de passe', 'error');
+        }
+      } catch (e) {
+        showToast('Erreur', 'error');
+      }
+    });
+
+    // Start
+    checkAuth();
+  </script>
+</body>
+</html>

@@ -230,6 +230,27 @@ export function buildAmazonUrl(asin: string, domain: string = "amazon.com"): str
 }
 
 /**
+ * Only allow https links that point to an official Amazon storefront.
+ * Protects the "Buy" buttons from javascript:/data:/phishing URLs.
+ */
+export function isSafeAmazonUrl(url?: string): boolean {
+  if (!url) return false;
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol !== "https:") return false;
+    const host = parsed.hostname.toLowerCase();
+    return (
+      AMAZON_MARKETS.some((m) => host === m.domain || host === `www.${m.domain}`) ||
+      host === "amzn.to" ||
+      host === "a.co" ||
+      host === "amzn.eu"
+    );
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Localizes an existing Amazon URL or ASIN to target domain
  */
 export function localizeAmazonUrl(

@@ -5,6 +5,8 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import type { Category } from "@/data/books";
 import { assetPath } from "@/utils/paths";
+import { useAmazonMarket } from "@/context/AmazonMarketContext";
+import { translations, categoryTranslations } from "@/utils/translations";
 
 interface CategoryCardProps {
   category: Category;
@@ -12,6 +14,12 @@ interface CategoryCardProps {
 }
 
 export default function CategoryCard({ category, index }: CategoryCardProps) {
+  const { language, isGerman } = useAmazonMarket();
+  const t = translations[language];
+  const catInfo = isGerman ? categoryTranslations[category.id] : null;
+  const catName = catInfo?.nameDe || category.name;
+  const catDesc = catInfo?.descDe || category.description;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -30,7 +38,7 @@ export default function CategoryCard({ category, index }: CategoryCardProps) {
           <div className="relative h-48 sm:h-56 overflow-hidden">
             <Image
               src={assetPath(category.illustration)}
-              alt={category.name}
+              alt={catName}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-110"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -40,10 +48,11 @@ export default function CategoryCard({ category, index }: CategoryCardProps) {
             />
 
             {/* Books count badge */}
-            <div className="absolute top-3 right-3 px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full text-xs font-bold shadow-lg"
+            <div
+              className="absolute top-3 right-3 px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full text-xs font-bold shadow-lg"
               style={{ color: category.color }}
             >
-              {category.books.length} books
+              {category.books.length} {t.categoryCardBooksCount}
             </div>
           </div>
 
@@ -58,18 +67,19 @@ export default function CategoryCard({ category, index }: CategoryCardProps) {
                 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors"
                 style={{ fontFamily: "var(--font-fredoka)" }}
               >
-                {category.name}
+                {catName}
               </h3>
             </div>
             <p className="text-sm text-foreground/55 leading-relaxed">
-              {category.description}
+              {catDesc}
             </p>
 
             {/* Arrow */}
-            <div className="mt-4 flex items-center gap-2 text-sm font-semibold"
+            <div
+              className="mt-4 flex items-center gap-2 text-sm font-semibold"
               style={{ color: category.color }}
             >
-              <span>Browse Books</span>
+              <span>{t.categoryCardBrowse}</span>
               <motion.span
                 className="inline-block"
                 animate={{ x: [0, 5, 0] }}

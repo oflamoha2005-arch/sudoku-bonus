@@ -12,6 +12,7 @@ import {
   localizeAmazonUrl,
   getBookDefaultMarket,
 } from "@/utils/amazon";
+import { Lang } from "@/utils/translations";
 
 interface AmazonMarketContextValue {
   currentMarket: AmazonMarket;
@@ -20,6 +21,9 @@ interface AmazonMarketContextValue {
   allMarkets: AmazonMarket[];
   isAutoDetected: boolean;
   detectedCountryCode: string | null;
+  language: Lang;
+  isGerman: boolean;
+  setLanguage: (lang: Lang) => void;
 }
 
 const AmazonMarketContext = createContext<AmazonMarketContextValue | null>(null);
@@ -38,6 +42,8 @@ export function AmazonMarketProvider({ children }: { children: React.ReactNode }
       if (savedCode) {
         const found = AMAZON_MARKETS.find((m) => m.code === savedCode.toUpperCase());
         if (found) {
+          // Intentional: hydrate saved preference after mount (keeps SSR output stable)
+          // eslint-disable-next-line react-hooks/set-state-in-effect
           setCurrentMarket(found);
           setIsAutoDetected(false);
           return;
@@ -97,6 +103,16 @@ export function AmazonMarketProvider({ children }: { children: React.ReactNode }
     }
   }, []);
 
+  const isGerman = currentMarket.code === "DE";
+  const language: Lang = isGerman ? "de" : "en";
+
+  const handleSetLanguage = useCallback(
+    (lang: Lang) => {
+      handleSetMarket(lang === "de" ? "DE" : "US");
+    },
+    [handleSetMarket]
+  );
+
   const getBookUrl = useCallback(
     (book: Book, marketOverride?: AmazonMarket) => {
       const targetDomain = marketOverride
@@ -122,8 +138,20 @@ export function AmazonMarketProvider({ children }: { children: React.ReactNode }
       allMarkets: AMAZON_MARKETS,
       isAutoDetected,
       detectedCountryCode,
+      language,
+      isGerman,
+      setLanguage: handleSetLanguage,
     }),
-    [currentMarket, handleSetMarket, getBookUrl, isAutoDetected, detectedCountryCode]
+    [
+      currentMarket,
+      handleSetMarket,
+      getBookUrl,
+      isAutoDetected,
+      detectedCountryCode,
+      language,
+      isGerman,
+      handleSetLanguage,
+    ]
   );
 
   return <AmazonMarketContext.Provider value={value}>{children}</AmazonMarketContext.Provider>;

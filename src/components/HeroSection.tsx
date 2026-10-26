@@ -1,11 +1,15 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { assetPath } from "@/utils/paths";
+import { useAmazonMarket } from "@/context/AmazonMarketContext";
+import { translations } from "@/utils/translations";
 
 export default function HeroSection() {
+  const { language, isGerman } = useAmazonMarket();
+  const t = translations[language];
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-4 sm:pb-6">
       {/* Background gradient */}
@@ -69,7 +73,7 @@ export default function HeroSection() {
             >
               <span className="w-2 h-2 rounded-full bg-accent-green animate-pulse" />
               <span className="text-xs sm:text-sm font-medium text-foreground/70">
-                ✨ Meet Oufella — Activity Books for Curious Kids
+                {t.heroBadge}
               </span>
             </motion.div>
 
@@ -77,8 +81,8 @@ export default function HeroSection() {
               className="text-4xl sm:text-5xl lg:text-5xl xl:text-[3.5rem] font-bold leading-[1.15] mb-3 sm:mb-4"
               style={{ fontFamily: "var(--font-fredoka)" }}
             >
-              Where Learning Feels Like{" "}
-              <span className="gradient-text">Pure Play!</span>{" "}
+              {t.heroTitleLine1}{" "}
+              <span className="gradient-text">{t.heroTitleHighlight}</span>{" "}
               <motion.span
                 className="inline-block"
                 animate={{ scale: [1, 1.18, 1] }}
@@ -89,9 +93,7 @@ export default function HeroSection() {
             </h1>
 
             <p className="text-sm sm:text-base lg:text-lg text-foreground/70 leading-relaxed mb-5 sm:mb-6 max-w-xl">
-              Welcome to <strong>Oufella</strong>! We craft a vibrant, screen-free world of
-              activity books — packed with brain-boosting puzzles, winding mazes, word searches,
-              fill-ins, and hidden pictures designed to spark joy and make learning an absolute blast.
+              {t.heroSubtitle}
             </p>
 
             <div className="flex flex-wrap gap-3 sm:gap-4">
@@ -99,7 +101,7 @@ export default function HeroSection() {
                 href="/#categories"
                 className="group inline-flex items-center gap-2 px-6 py-3 sm:px-7 sm:py-3.5 bg-gradient-to-r from-primary to-accent-purple text-white rounded-full font-bold text-base sm:text-lg shadow-xl shadow-primary/25 hover:shadow-2xl hover:shadow-primary/30 hover:scale-105 transition-all"
               >
-                Explore The Collection
+                {t.heroCtaExplore}
                 <motion.span
                   animate={{ x: [0, 5, 0] }}
                   transition={{ repeat: Infinity, duration: 1.5 }}
@@ -111,15 +113,15 @@ export default function HeroSection() {
                 href="/#teaser"
                 className="inline-flex items-center gap-2 px-6 py-3 sm:px-7 sm:py-3.5 bg-white/70 backdrop-blur-sm text-foreground rounded-full font-bold text-base sm:text-lg border-2 border-accent-yellow/30 hover:border-accent-yellow hover:bg-accent-yellow/10 transition-all"
               >
-                Play a Mini Game 🎯
+                {t.heroCtaGame}
               </Link>
             </div>
 
             {/* Stats */}
             <div className="flex gap-6 sm:gap-8 mt-5 sm:mt-6">
-              <Stat number="50+" label="Activity Books" />
-              <Stat number="100%" label="Screen-Free Fun" />
-              <Stat number="⭐ 5-Star" label="Kid & Parent Loved" />
+              <Stat number="50+" label={t.heroStatBooks} />
+              <Stat number="100%" label={t.heroStatScreenFree} />
+              <Stat number="⭐ 5-Star" label={t.heroStatRating} />
             </div>
           </motion.div>
 
@@ -174,7 +176,7 @@ export default function HeroSection() {
                       className="text-[11px] sm:text-xs md:text-sm font-extrabold text-foreground tracking-wide whitespace-nowrap"
                       style={{ fontFamily: "var(--font-fredoka)" }}
                     >
-                      Hello Friend!
+                      {t.bubble1}
                     </span>
                     <motion.span
                       className="inline-block text-xs sm:text-base"
@@ -216,7 +218,11 @@ export default function HeroSection() {
                       className="text-[11px] sm:text-xs md:text-sm font-extrabold text-foreground tracking-wide whitespace-nowrap"
                       style={{ fontFamily: "var(--font-fredoka)" }}
                     >
-                      Welcome to <span className="text-primary font-black">Oufella</span>!
+                      {isGerman ? (
+                        <>Willkommen bei <span className="text-primary font-black">Oufella</span>!</>
+                      ) : (
+                        <>Welcome to <span className="text-primary font-black">Oufella</span>!</>
+                      )}
                     </span>
                     <motion.span
                       className="inline-block text-xs sm:text-base"
@@ -258,7 +264,7 @@ export default function HeroSection() {
                       className="text-[11px] sm:text-xs md:text-sm font-extrabold text-foreground tracking-wide whitespace-nowrap"
                       style={{ fontFamily: "var(--font-fredoka)" }}
                     >
-                      Explore our fun books!
+                      {t.bubble3}
                     </span>
                     <motion.span
                       className="inline-block text-xs sm:text-base"
@@ -300,7 +306,7 @@ export default function HeroSection() {
                       className="text-[11px] sm:text-xs md:text-sm font-extrabold text-[#2D1B4E] tracking-wide whitespace-nowrap"
                       style={{ fontFamily: "var(--font-fredoka)" }}
                     >
-                      Grab a Free Book!
+                      {t.bubble4}
                     </span>
                     <motion.span
                       className="inline-block text-xs sm:text-base"
@@ -342,7 +348,7 @@ export default function HeroSection() {
                       className="text-[11px] sm:text-xs md:text-sm font-extrabold text-[#2D1B4E] tracking-wide whitespace-nowrap"
                       style={{ fontFamily: "var(--font-fredoka)" }}
                     >
-                      New Book Just Dropped
+                      {t.bubble5}
                     </span>
                     <motion.span
                       className="inline-block text-xs sm:text-base"
@@ -384,7 +390,7 @@ export default function HeroSection() {
                       className="text-[11px] sm:text-xs md:text-sm font-extrabold text-[#2D1B4E] tracking-wide whitespace-nowrap"
                       style={{ fontFamily: "var(--font-fredoka)" }}
                     >
-                      Made With Love, Just for You!
+                      {t.bubble6}
                     </span>
                     <motion.span
                       className="inline-block text-xs sm:text-base"
@@ -410,7 +416,7 @@ export default function HeroSection() {
               className="absolute -bottom-4 -left-4 px-5 py-3 bg-white rounded-2xl shadow-xl border border-accent-yellow/20"
             >
               <span className="text-sm font-bold text-foreground">
-                📚 Available on Amazon
+                {t.heroAmazonAvailable}
               </span>
             </motion.div>
 
@@ -425,7 +431,7 @@ export default function HeroSection() {
               className="absolute -top-4 -right-4 px-4 py-2 bg-accent-yellow rounded-2xl shadow-xl"
             >
               <span className="text-sm font-bold text-[#2D1B4E]">
-                ✨ New Releases!
+                {t.heroNewReleases}
               </span>
             </motion.div>
           </motion.div>

@@ -5,11 +5,15 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, BookOpen, ChevronDown } from "lucide-react";
 import { categories, categoryGroups } from "@/data/books";
+import { useAmazonMarket } from "@/context/AmazonMarketContext";
+import { translations, categoryTranslations } from "@/utils/translations";
 import MarketSelector from "./MarketSelector";
 
 export default function Navbar() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const { language, isGerman } = useAmazonMarket();
+  const t = translations[language];
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-nav-bg border-b border-accent-purple/10">
@@ -33,7 +37,7 @@ export default function Navbar() {
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-1">
-            <NavLink href="/">Home</NavLink>
+            <NavLink href="/">{t.navHome}</NavLink>
 
             {/* Categories Dropdown */}
             <div
@@ -42,7 +46,7 @@ export default function Navbar() {
               onMouseLeave={() => setIsCategoryOpen(false)}
             >
               <button className="flex items-center gap-1 px-4 py-2 rounded-xl text-foreground/70 hover:text-foreground hover:bg-accent-yellow/10 transition-all font-medium">
-                Categories
+                {t.navCategories}
                 <ChevronDown
                   className={`w-4 h-4 transition-transform ${isCategoryOpen ? "rotate-180" : ""}`}
                 />
@@ -57,41 +61,55 @@ export default function Navbar() {
                     transition={{ duration: 0.2 }}
                     className="absolute top-full left-0 mt-1 w-64 bg-white rounded-2xl shadow-xl border border-accent-purple/10 p-3 space-y-1"
                   >
-                    {categoryGroups.map((group) => (
-                      <div key={group.id}>
-                        <p className="text-xs font-semibold text-foreground/40 uppercase tracking-wider px-3 py-1">
-                          {group.name}
-                        </p>
-                        {categories
-                          .filter((c) => c.group === group.id)
-                          .map((cat) => (
-                            <Link
-                              key={cat.id}
-                              href={`/categories/${cat.id}`}
-                              className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-accent-yellow/10 transition-colors group"
-                            >
-                              <span
-                                className="w-3 h-3 rounded-full"
-                                style={{ backgroundColor: cat.color }}
-                              />
-                              <span className="text-sm font-medium text-foreground/70 group-hover:text-foreground transition-colors">
-                                {cat.name}
-                              </span>
-                            </Link>
-                          ))}
-                      </div>
-                    ))}
+                    {categoryGroups.map((group) => {
+                      const groupName = isGerman
+                        ? group.id === "coloring"
+                          ? "Malen & Kreativität"
+                          : "Rätsel- & Denksport"
+                        : group.name;
+
+                      return (
+                        <div key={group.id}>
+                          <p className="text-xs font-semibold text-foreground/40 uppercase tracking-wider px-3 py-1">
+                            {groupName}
+                          </p>
+                          {categories
+                            .filter((c) => c.group === group.id)
+                            .map((cat) => {
+                              const catName = isGerman
+                                ? categoryTranslations[cat.id]?.nameDe || cat.name
+                                : cat.name;
+
+                              return (
+                                <Link
+                                  key={cat.id}
+                                  href={`/categories/${cat.id}`}
+                                  className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-accent-yellow/10 transition-colors group"
+                                >
+                                  <span
+                                    className="w-3 h-3 rounded-full"
+                                    style={{ backgroundColor: cat.color }}
+                                  />
+                                  <span className="text-sm font-medium text-foreground/70 group-hover:text-foreground transition-colors">
+                                    {catName}
+                                  </span>
+                                </Link>
+                              );
+                            })}
+                        </div>
+                      );
+                    })}
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
 
-            <NavLink href="/#about">About</NavLink>
+            <NavLink href="/#about">{t.navAbout}</NavLink>
           </div>
 
           {/* Right Side */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Amazon Market Selector */}
+            {/* Amazon Market & Language Selector */}
             <MarketSelector />
 
             {/* Social icons (decorative) */}
@@ -109,10 +127,10 @@ export default function Navbar() {
             </div>
 
             <Link
-              href="/sign-in"
+              href="/demand-us"
               className="px-5 py-2.5 bg-gradient-to-r from-primary to-accent-purple text-white rounded-full font-semibold text-sm shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:scale-105 transition-all"
             >
-              Sign In
+              {t.navDemandUs}
             </Link>
           </div>
 
@@ -143,7 +161,7 @@ export default function Navbar() {
           >
             <div className="px-4 py-4 space-y-2">
               <MobileLink href="/" onClick={() => setIsMobileOpen(false)}>
-                Home
+                {t.navHome}
               </MobileLink>
 
               {categoryGroups.map((group) => {
@@ -151,44 +169,56 @@ export default function Navbar() {
                   (c) => c.group === group.id
                 );
                 if (groupCategories.length === 0) return null;
+                const groupName = isGerman
+                  ? group.id === "coloring"
+                    ? "Malen & Kreativität"
+                    : "Rätsel- & Denksport"
+                  : group.name;
+
                 return (
                   <div key={group.id}>
                     <p className="text-xs font-semibold text-foreground/40 uppercase tracking-wider px-4 pt-3">
-                      {group.name}
+                      {groupName}
                     </p>
-                    {groupCategories.map((cat) => (
-                      <MobileLink
-                        key={cat.id}
-                        href={`/categories/${cat.id}`}
-                        onClick={() => setIsMobileOpen(false)}
-                      >
-                        <span
-                          className="w-2.5 h-2.5 rounded-full inline-block mr-2"
-                          style={{ backgroundColor: cat.color }}
-                        />
-                        {cat.name}
-                      </MobileLink>
-                    ))}
+                    {groupCategories.map((cat) => {
+                      const catName = isGerman
+                        ? categoryTranslations[cat.id]?.nameDe || cat.name
+                        : cat.name;
+
+                      return (
+                        <MobileLink
+                          key={cat.id}
+                          href={`/categories/${cat.id}`}
+                          onClick={() => setIsMobileOpen(false)}
+                        >
+                          <span
+                            className="w-2.5 h-2.5 rounded-full inline-block mr-2"
+                            style={{ backgroundColor: cat.color }}
+                          />
+                          {catName}
+                        </MobileLink>
+                      );
+                    })}
                   </div>
                 );
               })}
 
               <MobileLink href="/#about" onClick={() => setIsMobileOpen(false)}>
-                About Us
+                {t.navAbout}
               </MobileLink>
 
               <div className="pt-3 px-2 flex items-center justify-between border-t border-accent-purple/10">
-                <span className="text-xs font-semibold text-foreground/60">Amazon Store:</span>
+                <span className="text-xs font-semibold text-foreground/60">{t.navLanguage}:</span>
                 <MarketSelector />
               </div>
 
               <div className="pt-2">
                 <Link
-                  href="/sign-in"
+                  href="/demand-us"
                   onClick={() => setIsMobileOpen(false)}
                   className="block w-full text-center px-5 py-3 bg-gradient-to-r from-primary to-accent-purple text-white rounded-2xl font-semibold shadow-lg"
                 >
-                  Sign In
+                  {t.navDemandUs}
                 </Link>
               </div>
             </div>

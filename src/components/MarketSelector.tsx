@@ -6,6 +6,26 @@ import { ChevronDown, Globe, Check } from "lucide-react";
 import { useAmazonMarket } from "@/context/AmazonMarketContext";
 import { AmazonMarket } from "@/utils/amazon";
 
+// The 2 specific languages requested by user: English & Germany (Deutsch)
+export const SUPPORTED_LANGUAGES = [
+  {
+    code: "US",
+    langName: "English",
+    langNameDe: "Englisch (US)",
+    subName: "amazon.com",
+    flag: "🇺🇸",
+    locale: "en",
+  },
+  {
+    code: "DE",
+    langName: "Germany (Deutsch)",
+    langNameDe: "Deutschland (Deutsch)",
+    subName: "amazon.de",
+    flag: "🇩🇪",
+    locale: "de",
+  },
+];
+
 interface MarketSelectorProps {
   compact?: boolean;
   className?: string;
@@ -23,11 +43,13 @@ export default function MarketSelector({
   onSelectMarket,
   onOpenChange,
 }: MarketSelectorProps) {
-  const { currentMarket: globalMarket, setMarket, allMarkets, isAutoDetected } = useAmazonMarket();
+  const { currentMarket: globalMarket, setMarket, allMarkets, isGerman } = useAmazonMarket();
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const activeMarket = selectedMarket || globalMarket;
+  const isCardGerman = activeMarket.code === "DE";
+  const currentLang = isCardGerman ? SUPPORTED_LANGUAGES[1] : SUPPORTED_LANGUAGES[0];
 
   const handleToggle = () => {
     const next = !isOpen;
@@ -51,29 +73,40 @@ export default function MarketSelector({
     };
   }, [isOpen, onOpenChange]);
 
+  const selectLanguage = (langCode: string) => {
+    const market = allMarkets.find((m) => m.code === langCode);
+    if (market) {
+      if (onSelectMarket) {
+        onSelectMarket(market);
+      } else {
+        setMarket(market.code);
+      }
+    }
+    setIsOpen(false);
+    onOpenChange?.(false);
+  };
+
+  const displayName = isGerman ? currentLang.langNameDe : currentLang.langName;
+
   return (
     <div ref={containerRef} className={`relative inline-block text-left ${className}`}>
       {/* Trigger Button */}
       <button
         type="button"
         onClick={handleToggle}
-        aria-label="Select Amazon Marketplace"
+        aria-label={isGerman ? "Sprache wählen (Englisch / Deutsch)" : "Select Language (English / Germany)"}
         aria-expanded={isOpen}
-        className={`inline-flex items-center gap-1.5 rounded-full font-semibold transition-all ${
+        className={`inline-flex items-center gap-2 rounded-full font-semibold transition-all ${
           compact
             ? "px-2.5 py-1 text-xs bg-gray-100/90 hover:bg-gray-200/80 text-foreground/80 border border-gray-200/80 active:scale-95 cursor-pointer"
-            : "px-3.5 py-1.5 text-xs sm:text-sm bg-white/80 hover:bg-white text-foreground/85 border border-accent-purple/15 shadow-sm hover:shadow cursor-pointer"
+            : "px-3.5 py-1.5 text-xs sm:text-sm bg-white/90 hover:bg-white text-foreground/85 border border-accent-purple/20 shadow-sm hover:shadow-md cursor-pointer"
         }`}
       >
-        <span className="text-sm leading-none">{activeMarket.flag}</span>
-        <span className="font-bold tracking-tight">
-          {compact ? activeMarket.domain.replace("amazon.", "") : activeMarket.domain}
+        {!compact && <Globe className="w-3.5 h-3.5 text-primary shrink-0" />}
+        <span className="text-sm leading-none">{currentLang.flag}</span>
+        <span className="font-bold tracking-tight text-xs sm:text-sm">
+          {compact ? currentLang.subName.replace("amazon.", "") : displayName}
         </span>
-        {isAutoDetected && !compact && !selectedMarket && (
-          <span className="hidden lg:inline-block text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.2 rounded-full bg-accent-green/20 text-accent-green">
-            Auto
-          </span>
-        )}
         <ChevronDown
           className={`w-3.5 h-3.5 text-foreground/50 transition-transform duration-200 ${
             isOpen ? (dropUp ? "" : "rotate-180") : dropUp ? "rotate-180" : ""
@@ -81,7 +114,7 @@ export default function MarketSelector({
         />
       </button>
 
-      {/* Dropdown Menu */}
+      {/* Dropdown Menu (English & Germany) */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -91,49 +124,41 @@ export default function MarketSelector({
             transition={{ duration: 0.15, ease: "easeOut" }}
             className={`absolute right-0 z-50 ${
               dropUp ? "bottom-full mb-2 origin-bottom-right" : "top-full mt-2 origin-top-right"
-            } w-64 max-h-72 overflow-y-auto rounded-2xl bg-white p-2 border border-gray-200/90 divide-y divide-gray-100 focus:outline-none`}
-            style={{
-              boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.25), 0 0 15px rgba(0, 0, 0, 0.05)",
-            }}
+            } w-56 rounded-2xl bg-white p-2 border border-gray-200/90 shadow-2xl focus:outline-none divide-y divide-gray-100`}
           >
             <div className="px-3 py-2 text-[11px] font-bold text-foreground/50 uppercase tracking-wider flex items-center justify-between">
               <span className="flex items-center gap-1.5">
                 <Globe className="w-3.5 h-3.5 text-primary" />
-                Amazon Marketplace
+                {isGerman ? "Sprache wählen" : "Language / Sprache"}
               </span>
-              <span>{allMarkets.length} Stores</span>
+              <span className="text-[10px] text-purple-600 font-semibold">
+                {isGerman ? "2 Sprachen" : "2 Languages"}
+              </span>
             </div>
 
-            <div className="py-1">
-              {allMarkets.map((m) => {
-                const isSelected = m.code === activeMarket.code;
+            <div className="py-1 space-y-1">
+              {SUPPORTED_LANGUAGES.map((lang) => {
+                const isSelected = isCardGerman ? lang.code === "DE" : lang.code === "US";
+                const itemLabel = isGerman ? lang.langNameDe : lang.langName;
                 return (
                   <button
-                    key={m.code}
+                    key={lang.code}
                     type="button"
-                    onClick={() => {
-                      if (onSelectMarket) {
-                        onSelectMarket(m);
-                      } else {
-                        setMarket(m.code);
-                      }
-                      setIsOpen(false);
-                      onOpenChange?.(false);
-                    }}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-left text-xs transition-colors cursor-pointer ${
+                    onClick={() => selectLanguage(lang.code)}
+                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left text-xs sm:text-sm transition-all cursor-pointer ${
                       isSelected
-                        ? "bg-primary/10 text-primary font-bold"
+                        ? "bg-purple-50 text-purple-700 font-bold border border-purple-100"
                         : "hover:bg-accent-yellow/15 text-foreground/80 hover:text-foreground"
                     }`}
                   >
-                    <div className="flex items-center gap-2.5 truncate">
-                      <span className="text-base leading-none">{m.flag}</span>
-                      <div className="truncate">
-                        <div className="truncate font-medium">{m.name}</div>
-                        <div className="text-[10px] text-foreground/50 font-mono">{m.domain}</div>
+                    <div className="flex items-center gap-2.5">
+                      <span className="text-lg leading-none">{lang.flag}</span>
+                      <div>
+                        <div className="font-semibold leading-tight">{itemLabel}</div>
+                        <div className="text-[10px] text-foreground/50 font-mono">{lang.subName}</div>
                       </div>
                     </div>
-                    {isSelected && <Check className="w-4 h-4 text-primary shrink-0 ml-2" />}
+                    {isSelected && <Check className="w-4 h-4 text-purple-600 shrink-0 ml-2" />}
                   </button>
                 );
               })}

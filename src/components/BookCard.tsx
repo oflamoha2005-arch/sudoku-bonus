@@ -2,12 +2,12 @@
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import type { Book } from "@/data/books";
 import { ExternalLink } from "lucide-react";
 import { assetPath } from "@/utils/paths";
 import { useAmazonMarket } from "@/context/AmazonMarketContext";
-import { AmazonMarket, getBookDefaultMarket } from "@/utils/amazon";
+import { AmazonMarket, getBookDefaultMarket, isSafeAmazonUrl } from "@/utils/amazon";
+import { translations, bookTranslationsDe } from "@/utils/translations";
 import MarketSelector from "./MarketSelector";
 
 interface BookCardProps {
@@ -17,27 +17,29 @@ interface BookCardProps {
 }
 
 export default function BookCard({ book, categoryColor, index }: BookCardProps) {
-  const { getBookUrl } = useAmazonMarket();
+  const { getBookUrl, language, isGerman } = useAmazonMarket();
+  const t = translations[language];
 
   // Book default marketplace:
   // English books default to US (amazon.com)
   // German books default to DE (amazon.de)
   const defaultMarket = useMemo(() => getBookDefaultMarket(book), [book]);
-  const [selectedMarket, setSelectedMarket] = useState<AmazonMarket>(defaultMarket);
+  // The visitor's manual choice (if any) wins over the book's default marketplace
+  const [marketOverride, setMarketOverride] = useState<AmazonMarket | null>(null);
+  const selectedMarket = marketOverride ?? defaultMarket;
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  useEffect(() => {
-    setSelectedMarket(defaultMarket);
-  }, [defaultMarket]);
 
   const localizedUrl = getBookUrl(book, selectedMarket);
 
-  const hasValidAmazonUrl =
-    localizedUrl &&
-    localizedUrl !== "#" &&
-    localizedUrl.startsWith("http");
+  const hasValidAmazonUrl = isSafeAmazonUrl(localizedUrl);
 
   const cardRef = useRef<HTMLDivElement>(null);
+
+  // Localized title, badge, description
+  const deInfo = isGerman ? bookTranslationsDe[book.id] : null;
+  const displayTitle = deInfo?.titleDe || book.title;
+  const displayBadge = deInfo?.badgeDe || book.badge;
+  const displayDesc = deInfo?.descDe || book.description;
 
   // Lightweight CSS-based scroll reveal (replaces framer-motion whileInView)
   useEffect(() => {
@@ -76,7 +78,7 @@ export default function BookCard({ book, categoryColor, index }: BookCardProps) 
           <div className="relative w-full h-full drop-shadow-xl transition-transform duration-500 group-hover:scale-105">
             <Image
               src={assetPath(book.cover)}
-              alt={book.title}
+              alt={displayTitle}
               fill
               className="object-contain"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -84,14 +86,14 @@ export default function BookCard({ book, categoryColor, index }: BookCardProps) 
             />
           </div>
 
-          {book.badge && (
+          {displayBadge && (
             <div
               className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold text-white shadow-md backdrop-blur-md"
               style={{
                 background: `linear-gradient(135deg, ${categoryColor}, ${categoryColor}DD)`,
               }}
             >
-              {book.badge}
+              {displayBadge}
             </div>
           )}
         </div>
@@ -103,11 +105,11 @@ export default function BookCard({ book, categoryColor, index }: BookCardProps) 
               className="text-lg sm:text-xl font-bold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors"
               style={{ fontFamily: "var(--font-fredoka)" }}
             >
-              {book.title}
+              {displayTitle}
             </h3>
-            {book.description && (
+            {displayDesc && (
               <p className="text-sm text-foreground/60 mb-5 line-clamp-3 leading-relaxed">
-                {book.description}
+                {displayDesc}
               </p>
             )}
           </div>
@@ -126,14 +128,14 @@ export default function BookCard({ book, categoryColor, index }: BookCardProps) 
                   }}
                 >
                   <span className="text-base leading-none">{selectedMarket.flag}</span>
-                  <span>Buy on {selectedMarket.domain}</span>
+                  <span>{t.buyOnAmazon} {selectedMarket.domain}</span>
                   <ExternalLink className="w-4 h-4 group-hover/btn:translate-x-0.5 transition-transform" />
                 </a>
 
                 {/* Market context hint & quick selector */}
                 <div className="flex items-center justify-between text-[11px] text-foreground/55 px-1 pt-1">
                   <span className="flex items-center gap-1.5 truncate">
-                    <span>Store:</span>
+                    <span>{t.storeLabel}</span>
                     <span className="font-semibold text-foreground/80 truncate">
                       {selectedMarket.name}
                     </span>
@@ -142,7 +144,7 @@ export default function BookCard({ book, categoryColor, index }: BookCardProps) 
                     compact
                     dropUp
                     selectedMarket={selectedMarket}
-                    onSelectMarket={setSelectedMarket}
+                    onSelectMarket={setMarketOverride}
                     onOpenChange={setIsDropdownOpen}
                   />
                 </div>
@@ -154,10 +156,10 @@ export default function BookCard({ book, categoryColor, index }: BookCardProps) 
                     className="w-2 h-2 rounded-full"
                     style={{ backgroundColor: categoryColor }}
                   />
-                  <span className="text-xs sm:text-sm">Available on Amazon</span>
+                  <span className="text-xs sm:text-sm">{t.availableOnAmazon}</span>
                 </span>
                 <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-white text-foreground/50 border border-gray-200 font-medium">
-                  Link Soon
+                  {t.linkSoon}
                 </span>
               </div>
             )}

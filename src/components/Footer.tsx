@@ -1,7 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import { categories } from "@/data/books";
+import { useAmazonMarket } from "@/context/AmazonMarketContext";
+import { translations, categoryTranslations } from "@/utils/translations";
 
 export default function Footer() {
+  const { language, isGerman } = useAmazonMarket();
+  const t = translations[language];
+
   return (
     <footer className="relative bg-gradient-to-br from-[#2D1B4E] to-[#1a0e30] text-white overflow-hidden">
       {/* Wavy top */}
@@ -38,8 +45,7 @@ export default function Footer() {
               </span>
             </h3>
             <p className="text-white/60 text-sm leading-relaxed mb-5">
-              Making learning an adventure, one puzzle at a time! Colorful
-              activity books that kids love and parents trust.
+              {t.footerBrandDesc}
             </p>
 
             {/* Social Icons (decorative, sans clique) */}
@@ -73,23 +79,29 @@ export default function Footer() {
               className="text-sm font-bold uppercase tracking-wider text-white/40 mb-4"
               style={{ fontFamily: "var(--font-fredoka)" }}
             >
-              Categories
+              {t.navCategories}
             </h4>
             <ul className="space-y-2.5">
-              {categories.map((cat) => (
-                <li key={cat.id}>
-                  <Link
-                    href={`/categories/${cat.id}`}
-                    className="flex items-center gap-2 text-white/60 hover:text-white transition-colors text-sm group"
-                  >
-                    <span
-                      className="w-2 h-2 rounded-full group-hover:scale-125 transition-transform"
-                      style={{ backgroundColor: cat.color }}
-                    />
-                    {cat.name}
-                  </Link>
-                </li>
-              ))}
+              {categories.map((cat) => {
+                const catName = isGerman
+                  ? categoryTranslations[cat.id]?.nameDe || cat.name
+                  : cat.name;
+
+                return (
+                  <li key={cat.id}>
+                    <Link
+                      href={`/categories/${cat.id}`}
+                      className="flex items-center gap-2 text-white/60 hover:text-white transition-colors text-sm group"
+                    >
+                      <span
+                        className="w-2 h-2 rounded-full group-hover:scale-125 transition-transform"
+                        style={{ backgroundColor: cat.color }}
+                      />
+                      {catName}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
@@ -99,7 +111,7 @@ export default function Footer() {
               className="text-sm font-bold uppercase tracking-wider text-white/40 mb-4"
               style={{ fontFamily: "var(--font-fredoka)" }}
             >
-              Quick Links
+              {t.footerQuickLinks}
             </h4>
             <ul className="space-y-2.5">
               <li>
@@ -107,7 +119,7 @@ export default function Footer() {
                   href="/"
                   className="text-white/60 hover:text-white transition-colors text-sm"
                 >
-                  Home
+                  {t.navHome}
                 </Link>
               </li>
               <li>
@@ -115,7 +127,7 @@ export default function Footer() {
                   href="/#about"
                   className="text-white/60 hover:text-white transition-colors text-sm"
                 >
-                  About Us
+                  {t.footerAboutUs}
                 </Link>
               </li>
               <li>
@@ -123,37 +135,36 @@ export default function Footer() {
                   href="/#categories"
                   className="text-white/60 hover:text-white transition-colors text-sm"
                 >
-                  All Books
+                  {t.footerAllBooks}
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/sign-in"
+                  href="/demand-us"
                   className="text-white/60 hover:text-white transition-colors text-sm"
                 >
-                  Sign In
+                  {t.footerDemandUs}
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Newsletter Teaser */}
+          {/* Demand Us Teaser */}
           <div>
             <h4
               className="text-sm font-bold uppercase tracking-wider text-white/40 mb-4"
               style={{ fontFamily: "var(--font-fredoka)" }}
             >
-              Stay in the Loop!
+              {t.footerTeaserTitle}
             </h4>
             <p className="text-white/50 text-sm mb-4">
-              New books, special offers, and free printables — sign up to be the
-              first to know!
+              {t.footerTeaserDesc}
             </p>
             <Link
-              href="/sign-in"
+              href="/demand-us"
               className="inline-block px-5 py-2.5 bg-gradient-to-r from-accent-yellow to-accent-orange text-[#2D1B4E] rounded-full font-bold text-sm hover:scale-105 transition-transform shadow-lg"
             >
-              Join Us ✨
+              {t.footerTeaserBtn}
             </Link>
           </div>
         </div>
@@ -161,12 +172,22 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-white/30 text-xs">
-            © {new Date().getFullYear()} Oufella. All rights reserved. Made with
-            ❤️ for curious kids everywhere.
+            © {new Date().getFullYear()} Oufella. {t.footerCopyright}
           </p>
-          <p className="text-white/20 text-xs">
-            Activity books available on Amazon KDP
-          </p>
+          <div className="flex items-center gap-4">
+            <p className="text-white/20 text-xs">
+              {t.footerKdpNote}
+            </p>
+            {process.env.NODE_ENV !== "production" && (
+              <Link
+                href="/admin"
+                className="text-white/20 hover:text-white/70 transition-colors text-xs inline-flex items-center gap-1 font-medium px-2 py-1 rounded hover:bg-white/5"
+                title="Admin Portal (Manage Books)"
+              >
+                🔒 Admin
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </footer>

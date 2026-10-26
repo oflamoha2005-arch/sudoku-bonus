@@ -4,9 +4,13 @@ import { categories, categoryGroups, getAllBooks } from "@/data/books";
 import CategoryCard from "./CategoryCard";
 import BookCard from "./BookCard";
 import AnimatedSection from "./AnimatedSection";
+import { useAmazonMarket } from "@/context/AmazonMarketContext";
+import { translations } from "@/utils/translations";
 
 export default function CategoriesPreview() {
   const allBooksList = getAllBooks();
+  const { language, isGerman } = useAmazonMarket();
+  const t = translations[language];
 
   return (
     <section id="categories" className="relative py-20 sm:py-28 overflow-hidden">
@@ -17,18 +21,17 @@ export default function CategoriesPreview() {
         {/* Books Section Header */}
         <AnimatedSection className="text-center mb-14">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-accent-yellow/20 rounded-full text-xs sm:text-sm font-bold text-[#8A5B00] mb-4">
-            📚 Official Releases
+            {t.booksSectionBadge}
           </div>
           <h2
             className="text-4xl sm:text-5xl font-bold mb-4"
             style={{ fontFamily: "var(--font-fredoka)" }}
           >
-            Our Published <span className="text-primary">Books</span> ✨
+            {t.booksSectionTitle} <span className="text-primary">{t.booksSectionTitleHighlight}</span> ✨
           </h2>
           <div className="w-24 h-1.5 bg-gradient-to-r from-secondary to-accent-green rounded-full mx-auto mb-6" />
           <p className="text-base sm:text-lg text-foreground/65 max-w-2xl mx-auto leading-relaxed">
-            Browse our latest activity, puzzle, and coloring books crafted to bring joy,
-            relaxation, and brain-boosting fun!
+            {t.booksSectionSubtitle}
           </p>
         </AnimatedSection>
 
@@ -50,10 +53,10 @@ export default function CategoriesPreview() {
             className="text-3xl sm:text-4xl font-bold mb-3"
             style={{ fontFamily: "var(--font-fredoka)" }}
           >
-            Explore by <span className="text-accent-yellow">Category</span> 🎨
+            {t.categoriesSectionTitle} <span className="text-accent-yellow">{t.categoriesSectionTitleHighlight}</span> 🎨
           </h3>
           <p className="text-sm sm:text-base text-foreground/50 max-w-xl mx-auto">
-            Choose your favorite theme to dive into dedicated activity collections.
+            {t.categoriesSectionSubtitle}
           </p>
         </AnimatedSection>
 
@@ -64,6 +67,18 @@ export default function CategoriesPreview() {
           );
           if (groupCategories.length === 0) return null;
 
+          const groupName = isGerman
+            ? group.id === "coloring"
+              ? "Malen & Kreativität"
+              : "Rätsel- & Denksport"
+            : group.name;
+
+          const groupDesc = isGerman
+            ? group.id === "coloring"
+              ? "Zauberhafte Malwelten für Entspannung und Fantasie"
+              : "Großdruck-Rätsel, Sudokus & Denksportaufgaben für kluge Köpfe"
+            : group.description;
+
           return (
             <div key={group.id} className="mb-14 last:mb-0">
               <AnimatedSection className="mb-8">
@@ -72,10 +87,10 @@ export default function CategoriesPreview() {
                   style={{ fontFamily: "var(--font-fredoka)" }}
                 >
                   <span className="w-8 h-1 bg-gradient-to-r from-primary to-accent-purple rounded-full" />
-                  {group.name}
+                  {groupName}
                 </h4>
                 <p className="text-sm text-foreground/50 mt-1 ml-11">
-                  {group.description}
+                  {groupDesc}
                 </p>
               </AnimatedSection>
 

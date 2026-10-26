@@ -1,8 +1,11 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimatedSection from "./AnimatedSection";
+import { useAmazonMarket } from "@/context/AmazonMarketContext";
+import { translations } from "@/utils/translations";
 
 interface HiddenItem {
   id: string;
@@ -25,10 +28,11 @@ const initialItems: HiddenItem[] = [
 export default function InteractiveTeaser() {
   const [items, setItems] = useState<HiddenItem[]>(initialItems);
   const [showCelebration, setShowCelebration] = useState(false);
+  const { language } = useAmazonMarket();
+  const t = translations[language];
 
   const foundCount = items.filter((i) => i.found).length;
   const totalCount = items.length;
-  const allFound = foundCount === totalCount;
 
   const handleFind = useCallback(
     (id: string) => {
@@ -62,13 +66,12 @@ export default function InteractiveTeaser() {
             className="text-4xl sm:text-5xl font-bold mb-4"
             style={{ fontFamily: "var(--font-fredoka)" }}
           >
-            Can You{" "}
-            <span className="text-accent-purple">Find Them</span>? 🔍
+            {t.gameTitle}{" "}
+            <span className="text-accent-purple">{t.gameTitleHighlight}</span>? 🔍
           </h2>
           <div className="w-24 h-1.5 bg-gradient-to-r from-accent-purple to-primary rounded-full mx-auto mb-6" />
           <p className="text-lg text-foreground/60 max-w-xl mx-auto">
-            Try our mini hidden-object challenge! Click on the hidden items in
-            the scene below. How fast can you find them all?
+            {t.gameSubtitle}
           </p>
         </AnimatedSection>
 
@@ -163,7 +166,7 @@ export default function InteractiveTeaser() {
                   className="text-lg font-bold"
                   style={{ fontFamily: "var(--font-fredoka)" }}
                 >
-                  Found:{" "}
+                  {t.gameFound}{" "}
                   <span className="text-accent-green">{foundCount}</span>
                   <span className="text-foreground/40">/{totalCount}</span>
                 </div>
@@ -225,24 +228,23 @@ export default function InteractiveTeaser() {
                     className="text-3xl font-bold gradient-text mb-3"
                     style={{ fontFamily: "var(--font-fredoka)" }}
                   >
-                    Amazing Job!
+                    {t.gameSuccessTitle}
                   </h3>
                   <p className="text-foreground/60 mb-6">
-                    You found all the hidden objects! You&apos;d love our Hidden
-                    Pictures books — they&apos;re packed with even more fun!
+                    {t.gameSuccessDesc}
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3">
-                    <a
-                      href="/categories/hidden-pictures"
+                    <Link
+                      href="/#categories"
                       className="flex-1 px-6 py-3 bg-gradient-to-r from-accent-purple to-primary text-white rounded-2xl font-bold shadow-lg hover:scale-105 transition-transform"
                     >
-                      See Our Books 📚
-                    </a>
+                      {t.gameSeeBooks}
+                    </Link>
                     <button
                       onClick={handleReset}
                       className="flex-1 px-6 py-3 bg-gray-100 text-foreground rounded-2xl font-bold hover:bg-gray-200 transition-colors"
                     >
-                      Play Again 🔄
+                      {t.gamePlayAgain}
                     </button>
                   </div>
                 </motion.div>

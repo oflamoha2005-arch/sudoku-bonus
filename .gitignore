@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local admin secrets (password hash) - never commit
+admin-config.json
+*.tmp
+
+# python
+__pycache__/
+*.py[cod]
+$py.class
+*.sqlite3
