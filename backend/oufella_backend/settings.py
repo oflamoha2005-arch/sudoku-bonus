@@ -2,16 +2,33 @@
 Django settings for oufella_backend project.
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-oufella-books-secret-key-2026-custom-demands'
+# SECURITY: Secret key is configurable via environment variable
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY',
+    'django-insecure-oufella-books-secret-key-2026-custom-demands'
+)
 
-DEBUG = True
+# SECURITY: Debug defaults to False unless explicitly set to True in development
+DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() in ('true', '1')
 
-ALLOWED_HOSTS = ['*']
+# SECURITY: Avoid wildcard allowed hosts; restrict to trusted domains
+ALLOWED_HOSTS_ENV = os.environ.get('DJANGO_ALLOWED_HOSTS')
+if ALLOWED_HOSTS_ENV:
+    ALLOWED_HOSTS = [h.strip() for h in ALLOWED_HOSTS_ENV.split(',') if h.strip()]
+else:
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', 'testserver']
+
+# Security headers & limits
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+DATA_UPLOAD_MAX_MEMORY_SIZE = 1048576  # 1MB limit for payload size
 
 # Application definition
 INSTALLED_APPS = [
@@ -88,21 +105,34 @@ USE_TZ = True
 # Static files
 STATIC_URL = 'static/'
 
-# CORS Configuration - Allow Next.js frontend to talk to Django API
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS Configuration - Restrict to trusted frontend origins
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS_ENV = os.environ.get('CORS_ALLOWED_ORIGINS')
+if CORS_ALLOWED_ORIGINS_ENV:
+    CORS_ALLOWED_ORIGINS = [o.strip() for o in CORS_ALLOWED_ORIGINS_ENV.split(',') if o.strip()]
+else:
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:3001",
+        "http://127.0.0.1:3001",
+    ]
+
+# Allow any local port on localhost/127.0.0.1 for local testing
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^http:\/\/localhost:\d+$",
+    r"^http:\/\/127\.0\.0\.1:\d+$",
+]
+
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = [
-    "DELETE",
     "GET",
     "OPTIONS",
-    "PATCH",
     "POST",
-    "PUT",
 ]
 CORS_ALLOW_HEADERS = [
     "accept",
     "accept-encoding",
-    "authorization",
     "content-type",
     "dnt",
     "origin",

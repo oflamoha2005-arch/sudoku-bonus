@@ -10,8 +10,7 @@ echo   [1/2] Kay-demari Django Server f port 8000...
 echo   [2/2] Ghadi yt7ell Django Admin f: http://localhost:8000/admin/
 echo.
 echo   * Login Django Admin:
-echo       User: admin
-echo       Pass: oufella2026
+echo       Use your configured superuser account.
 echo.
 echo   * API URL: http://localhost:8000/api/demands/
 echo   * Ila bghiti t-qfel: dir Ctrl + C

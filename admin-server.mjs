@@ -16,7 +16,7 @@ const ADMIN_DIR = path.join(__dirname, "admin");
 // ---------------------------------------------------------------------------
 // Security constants
 // ---------------------------------------------------------------------------
-const LEGACY_DEFAULT_PASSWORD = "oufella2026";
+const LEGACY_DEFAULT_PASSWORD = process.env.ADMIN_LEGACY_PASSWORD || "";
 const MIN_PASSWORD_LENGTH = 8;
 const MAX_PASSWORD_LENGTH = 128;
 const SESSION_TTL_MS = 8 * 60 * 60 * 1000; // 8 hours
