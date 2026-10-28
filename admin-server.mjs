@@ -719,12 +719,6 @@ async function handleApi(req, res, pathname) {
   }
 
   if (pathname === "/api/git/publish" && req.method === "POST") {
-    if (config.mustChangePassword) {
-      return sendJson(res, 403, {
-        success: false,
-        error: "Beddel l-mot de passe d-default 9bel ma t-publier (Settings ⚙️).",
-      });
-    }
     if (publishing) {
       return sendJson(res, 409, { success: false, error: "Publish kayn deja khddam, tsna chwiya." });
     }

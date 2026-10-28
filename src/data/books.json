@@ -138,6 +138,17 @@
           "defaultMarket": "DE",
           "badge": "Ausfüllrätsel",
           "description": "Spannender Rätselspaß mit kniffligen Aufgaben für Erwachsene – perfekt für gemütliche und schaurig-schöne Halloween-Abende."
+        },
+        {
+          "id": "railway-tracks-train-track-puzzle-book-for-adults-0es2",
+          "title": "Railway Tracks: Train Track Puzzle Book for Adults",
+          "cover": "/covers/railway-tracks-train-track-puzzle-book-for-adults-mvsn0es1.png",
+          "asin": "B0HPKRNDMJ",
+          "amazonUrl": "https://www.amazon.com/dp/B0HPKRNDMJ",
+          "language": "en",
+          "defaultMarket": "US",
+          "badge": "brain game",
+          "description": "Train track logic puzzle book for adults with 80 grids from easy to expert, to relax, think, and solve your way from IN to OUT."
         }
       ]
     }
