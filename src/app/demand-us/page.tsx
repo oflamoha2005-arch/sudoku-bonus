@@ -138,21 +138,6 @@ export default function DemandUsPage() {
                   </p>
                 </div>
 
-                {/* Database Connection Info Pill */}
-                <div className="bg-purple-50/80 border border-purple-100 rounded-2xl px-4 py-3 mb-6 flex items-center justify-between text-xs text-purple-900">
-                  <span className="flex items-center gap-2 font-medium">
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>
-                      {isSupabaseConfigured
-                        ? (isGerman ? "Cloud-Datenbank online 🟢 (24/7 aktiv)" : "Cloud Database Online 🟢 (24/7 Active)")
-                        : t.demandServiceOnline}
-                    </span>
-                  </span>
-                  <span className="text-purple-600 font-semibold hidden sm:inline">
-                    {t.demandNoPassword}
-                  </span>
-                </div>
-
                 {errorMessage && (
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
