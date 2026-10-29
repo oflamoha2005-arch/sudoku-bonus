@@ -67,7 +67,9 @@ export const translations = {
     gamePlayAgain: "Play Again 🔄",
 
     // About Section
-    aboutTitle: "About",
+    aboutTitle: "Describe Your Dream Book",
+    aboutTitlePrefix: "Describe Your",
+    aboutTitleHighlight: "Dream Book ✨",
     aboutSubtitle:
       "Looking for a specific activity book or a custom puzzle challenge? You can easily request any book you want, and our creative team will design and publish it specially for you! Simply click on Demand Us and tell us what you want us to create.",
     aboutCtaButton: "Demand Your Custom Book ✨",
@@ -210,7 +212,9 @@ export const translations = {
     gamePlayAgain: "Noch einmal spielen 🔄",
 
     // About Section (Native high-level German as requested)
-    aboutTitle: "Über",
+    aboutTitle: "Beschreibe dein Wunschbuch",
+    aboutTitlePrefix: "Beschreibe dein",
+    aboutTitleHighlight: "Wunschbuch ✨",
     aboutSubtitle:
       "Auf der Suche nach einem bestimmten Beschäftigungsbuch oder kniffligen Rätsel? Du kannst bei uns ganz einfach dein ganz persönliches Wunschbuch anfragen – unser Kreativteam gestaltet und veröffentlicht es speziell für dich! Klicke einfach auf Wunschbuch anfragen und teile uns deine Ideen mit.",
     aboutCtaButton: "Wunschbuch anfragen ✨",

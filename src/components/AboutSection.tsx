@@ -21,8 +21,8 @@ export default function AboutSection() {
             className="text-4xl sm:text-5xl font-bold mb-4"
             style={{ fontFamily: "var(--font-fredoka)" }}
           >
-            {t.aboutTitle}{" "}
-            <span className="gradient-text">Oufella</span>
+            {t.aboutTitlePrefix}{" "}
+            <span className="gradient-text">{t.aboutTitleHighlight}</span>
           </h2>
           <div className="w-24 h-1.5 bg-gradient-to-r from-accent-yellow to-primary rounded-full mx-auto mb-6" />
 
