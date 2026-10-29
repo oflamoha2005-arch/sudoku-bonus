@@ -9,8 +9,6 @@ import { translations, categoryPillsTranslations } from "@/utils/translations";
 
 import { isSupabaseConfigured, submitToSupabase } from "@/lib/supabase";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_DJANGO_API_URL || "http://localhost:8000";
-
 export default function DemandUsPage() {
   const { language, isGerman } = useAmazonMarket();
   const t = translations[language];
@@ -61,7 +59,7 @@ export default function DemandUsPage() {
     saveToLocalBackup(payload);
 
     try {
-      // 1. If Supabase Cloud Database is configured, save directly to cloud 24/7
+      // Save directly to Supabase 24/7 Cloud Database
       if (isSupabaseConfigured) {
         await submitToSupabase({
           email: cleanEmail,
@@ -69,37 +67,11 @@ export default function DemandUsPage() {
           book_title: bookTitle.trim(),
           demand_text: cleanDemand,
         });
-        setSubmitted(true);
-        return;
       }
-
-      // 2. Otherwise try Django Backend (if running locally or deployed)
-      const res = await fetch(`${BACKEND_URL}/api/demands/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await res.json().catch(() => ({}));
-
-      if (res.ok && data.success) {
-        setSubmitted(true);
-      } else {
-        const errorMsg = data.error || `Server status: ${res.status}`;
-        // If server returned an explicit validation error, show it
-        if (res.status === 400 || res.status === 429) {
-          setErrorMessage(errorMsg);
-        } else {
-          // If server error, accept graciously with local backup
-          setSubmitted(true);
-        }
-      }
-    } catch {
-      // If neither Supabase nor Django is currently reachable, accept graciously
-      // because we already preserved the demand in localStorage backup!
+      setSubmitted(true);
+    } catch (err) {
+      console.error("Demand submission note:", err);
+      // Even if offline, user request is safely preserved in localStorage backup
       setSubmitted(true);
     } finally {
       setIsLoading(false);

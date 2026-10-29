@@ -88,7 +88,7 @@ export const translations = {
     demandTitle: "Demand Us A Book!",
     demandSubtitle:
       "Have a special book idea in mind? Tell us what kind of activity book you or your children want, and our team will create it for you!",
-    demandServiceOnline: "Demand Service is Online (Django Backend)",
+    demandServiceOnline: "Custom Demand Service is Online ⚡",
     demandNoPassword: "No password required • Email only",
     demandCategoryLabel: "Choose Book Category",
     demandEmailLabel: "Your Email Address",
@@ -231,7 +231,7 @@ export const translations = {
     demandTitle: "Dein Wunschbuch anfragen!",
     demandSubtitle:
       "Hast du eine besondere Buchidee im Kopf? Verrate uns, welche Art von Beschäftigungs- oder Rätselbuch du dir wünschst, und unser Kreativteam gestaltet es speziell für dich auf Amazon!",
-    demandServiceOnline: "Wunschbuch-Service ist online (Django Backend)",
+    demandServiceOnline: "Wunschbuch-Service ist online ⚡",
     demandNoPassword: "Kein Passwort erforderlich • Nur E-Mail",
     demandCategoryLabel: "Buch-Kategorie auswählen",
     demandEmailLabel: "Deine E-Mail-Adresse",
